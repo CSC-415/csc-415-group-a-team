@@ -19,10 +19,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.random.Random
 
-class GalleryListFragment: Fragment() {
+class GalleryListFragment : Fragment() {
     private var _binding: FragmentGalleryListBinding? = null
     private val binding get() = _binding!!
-
 
 
     override fun onCreateView(
@@ -30,23 +29,23 @@ class GalleryListFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentGalleryListBinding.inflate(inflater, container,false)
+        _binding = FragmentGalleryListBinding.inflate(inflater, container, false)
         binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
 
         val gallery = mutableListOf<Gallery_item>()
 
-        for (i in 1..10){
+        for (i in 1..10) {
             gallery.add(
                 createGalleryItem(
                     "https://th.bing.com/th/id/OIP.GAvKZNNy_8tdt9sZgZwQjQHaJQ?w=186&h=233&c=7&r=0&o=5&dpr=1.7&pid=1.7",
-                "Item $i",
-                "A cool stick dude"
+                    "Item $i",
+                    "A cool stick dude"
                 )
             )
         }
 
-        val adapter = GalleryAdapter(gallery){position ->
+        val adapter = GalleryAdapter(gallery) { position ->
             val galleryItem = gallery[position]
 
             val bundle = bundleOf(
@@ -77,7 +76,6 @@ class GalleryListFragment: Fragment() {
     }
 
 
-
     private fun createGalleryItem(image: String, name: String, description: String) =
         Gallery_item(
             name = name,
@@ -88,7 +86,7 @@ class GalleryListFragment: Fragment() {
 
     private fun formatDate(date: Date): String {
         val input = SimpleDateFormat("dd/mm/yyyy")
-         val formatted = input.format(date)
+        val formatted = input.format(date)
         return formatted.toString()
     }
 

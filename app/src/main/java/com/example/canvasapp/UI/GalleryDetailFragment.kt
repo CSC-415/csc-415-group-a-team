@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.canvasapp.databinding.FragmentGalleryItemDetailBinding
 
-class GalleryDetailFragment: Fragment() {
+class GalleryDetailFragment : Fragment() {
     private var _binding: FragmentGalleryItemDetailBinding? = null
     private val binding get() = _binding!!
 

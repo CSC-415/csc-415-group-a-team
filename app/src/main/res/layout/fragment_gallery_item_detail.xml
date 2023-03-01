@@ -26,8 +26,7 @@
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="@id/Frag_gallery_Image"
         app:layout_constraintStart_toStartOf="@id/Frag_gallery_Image"
-        app:layout_constraintTop_toBottomOf="@id/Frag_gallery_Image"
-        tools:text="cookie name" />
+        app:layout_constraintTop_toBottomOf="@id/Frag_gallery_Image" />
 
 
     <TextView
@@ -37,8 +36,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Frag_gallery_description"
-        tools:text="test" />
+        app:layout_constraintTop_toBottomOf="@id/Frag_gallery_description" />
 
 
     <TextView
@@ -47,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:textSize="28sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Frag_gallery_name" />
 
 

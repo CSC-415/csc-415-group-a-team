@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.commit{
+        supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(R.id.fragment_container_view, GalleryListFragment())
         }
