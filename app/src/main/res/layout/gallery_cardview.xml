@@ -21,7 +21,7 @@
             app:layout_constraintHeight_max="216dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ImageContrastCheck"
+            tools:ignore="ContentDescription,ImageContrastCheck"
             tools:src="@drawable/test_image_foreground" />
 
         <TextView
