@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FD752F"
+    tools:context=".MainActivity">
+
+    <!-- New Canvas Button -->
+    <Button
+        android:id="@+id/NewCanvasButton"
+        android:text="@string/new_canvas"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:backgroundTint="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/MainMenuTitle" />
+    <!--android:onClick="loadNewCanvas"-->
+
+    <!-- View Gallery Button -->
+    <Button
+        android:id="@+id/GalleryButton"
+        android:text="@string/view_canvases"
+        android:textSize="20sp"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="#000000"
+        app:layout_constraintTop_toBottomOf="@id/NewCanvasButton"
+        app:layout_constraintStart_toStartOf="@id/NewCanvasButton"
+        app:layout_constraintEnd_toEndOf="@id/NewCanvasButton"/>
+    <!--android:onClick="loadGallery"-->
+
+
+    <!-- Settings Button -->
+    <Button
+        android:id="@+id/SettingsButton"
+        android:text="@string/settings"
+        android:textSize="20sp"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="#000000"
+        app:layout_constraintTop_toBottomOf="@id/GalleryButton"
+        app:layout_constraintStart_toStartOf="@id/NewCanvasButton"
+        app:layout_constraintEnd_toEndOf="@id/NewCanvasButton"/>
+    <!--android:onClick="loadSettings"-->
+
+    <ImageView
+        android:id="@+id/MainMenuTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
+        android:src="@drawable/canvasapppic"
+        android:contentDescription="@string/canvas_by_the_a_team" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
