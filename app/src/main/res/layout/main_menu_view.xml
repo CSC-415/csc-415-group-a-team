@@ -12,6 +12,7 @@
     <Button
         android:id="@+id/NewCanvasButton"
         android:text="@string/new_canvas"
+        android:textColor="@color/white"
         android:layout_width="300dp"
         android:layout_height="75dp"
         android:layout_margin="10dp"
@@ -26,6 +27,7 @@
     <Button
         android:id="@+id/GalleryButton"
         android:text="@string/view_canvases"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_width="300dp"
         android:layout_height="75dp"
@@ -41,6 +43,7 @@
     <Button
         android:id="@+id/SettingsButton"
         android:text="@string/settings"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_width="300dp"
         android:layout_height="75dp"
