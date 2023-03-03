@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.commit
 import com.example.canvasapp.UI.MainMenuFragment
+//import com.example.canvasapp.UI.CanvasMainFragment
+//import com.example.canvasapp.UI.GalleryListFragment
 import com.example.canvasapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
