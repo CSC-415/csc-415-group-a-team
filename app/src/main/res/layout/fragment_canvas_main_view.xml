@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#333333"
-    tools:context=".UI.CanvasMainFragment">
+    tools:context=".ui.CanvasMainFragment">
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/canvas_gallery_image"
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -20,7 +20,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/photo_ref_foreground" />
+        tools:src="@drawable/photo_ref_foreground">
+        <include layout="@layout/draw_view"/>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/canvas_gallery_border"
