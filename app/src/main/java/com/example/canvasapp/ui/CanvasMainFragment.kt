@@ -16,7 +16,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
-
+import com.example.canvasapp.R
 
 
 class CanvasMainFragment : Fragment() {
@@ -56,9 +56,10 @@ class CanvasMainFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 if (it.resultCode == Activity.RESULT_OK){
                     if (it.data != null && it.data!!.data != null){
-                        val bmp = binding.canvasGalleryImage.save()
+                        val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+                        val bmp = drawView.save()
                         val uri: Uri = it.data!!.data!!
-                        val op = contentResolver.openOutputStream(uri)
+                        val op = requireActivity().contentResolver.openOutputStream(uri)
                         bmp?.compress(Bitmap.CompressFormat.PNG, 100, op)
                     }
                 }
@@ -79,7 +80,7 @@ class CanvasMainFragment : Fragment() {
         _binding = null
     }
 
-    fun createFile(fileName: String, launher: ActivityResultLauncher<Intent>){
+    fun createFile(fileName: String, launcher: ActivityResultLauncher<Intent>){
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
@@ -90,6 +91,6 @@ class CanvasMainFragment : Fragment() {
                 or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
                 or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
         )
-        launher.launch(intent)
+        launcher.launch(intent)
     }
 }

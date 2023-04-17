@@ -46,7 +46,7 @@ class DrawView  : View {
         paintBrush.strokeJoin = Paint.Join.ROUND
         paintBrush.strokeWidth = brushSize
 
-        drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        drawBitmap = Bitmap.createBitmap(900, 900, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(drawBitmap)
 
         params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -81,7 +81,22 @@ class DrawView  : View {
     }
 
     fun save(): Bitmap? {
-        return drawBitmap
+        // Create a new bitmap with the same dimensions as the drawBitmap
+        val savedBitmap = Bitmap.createBitmap(drawBitmap.width, drawBitmap.height, Bitmap.Config.ARGB_8888)
+
+        // Create a new canvas with the savedBitmap
+        val savedCanvas = Canvas(savedBitmap)
+
+        // Draw the contents of the drawCanvas (paths, colors, etc.) onto the savedCanvas
+        savedCanvas.drawBitmap(drawBitmap, 0f, 0f, null)
+        for (i in pathList.indices) {
+            paintBrush.color = colorList[i]
+            paintBrush.strokeWidth = brushSizeList[i]
+            savedCanvas.drawPath(pathList[i], paintBrush)
+        }
+
+        // Return the updated savedBitmap
+        return savedBitmap
     }
 
     override fun onDraw(canvas: Canvas) {
