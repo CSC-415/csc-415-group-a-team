@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.canvasapp.databinding.FragmentCanvasMainViewBinding
+import com.example.canvasapp.views.DrawView
 
 class CanvasMainFragment : Fragment() {
     companion object{
@@ -37,5 +38,19 @@ class CanvasMainFragment : Fragment() {
         Glide.with(this).load(color).into(binding.canvasMainColorTool)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set up the slider using ViewBinding
+        binding.canvasMainSizeSlider.addOnChangeListener { _, value, _ ->
+            DrawView.brushSize = value
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

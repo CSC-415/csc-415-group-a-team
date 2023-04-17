@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import com.example.canvasapp.ui.CanvasMainFragment.Companion.paintBrush
 import com.example.canvasapp.ui.CanvasMainFragment.Companion.path
 
-
 class DrawView  : View {
 
     var params : ViewGroup.LayoutParams? = null
@@ -20,7 +19,9 @@ class DrawView  : View {
     companion object{
         var pathList = ArrayList<Path>()
         var colorList = ArrayList<Int>()
+        var brushSizeList = ArrayList<Float>()
         var currentBrush = Color.BLACK
+        var brushSize = 8f
     }
 
     constructor(context: Context) : this(context, null){
@@ -38,7 +39,7 @@ class DrawView  : View {
         paintBrush.color = currentBrush
         paintBrush.style = Paint.Style.STROKE
         paintBrush.strokeJoin = Paint.Join.ROUND
-        paintBrush.strokeWidth = 8f
+        paintBrush.strokeWidth = brushSize
 
         params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
     }
@@ -54,8 +55,15 @@ class DrawView  : View {
             }
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(x,y)
-                pathList.add(path)
+                //pathList.add(path)
+                //colorList.add(currentBrush)
+                //brushSizeList.add(brushSize)
+            }
+            MotionEvent.ACTION_UP -> {
+                pathList.add(Path(path))
                 colorList.add(currentBrush)
+                brushSizeList.add(brushSize)
+                path.reset()
             }
             else -> return false
         }
@@ -67,10 +75,15 @@ class DrawView  : View {
     override fun onDraw(canvas: Canvas) {
 
         for(i in pathList.indices){
-            paintBrush.setColor(colorList[i])
+            paintBrush.color = colorList[i]
+            paintBrush.strokeWidth = brushSizeList[i]
             canvas.drawPath(pathList[i], paintBrush)
             invalidate() //changes done on UI
         }
 
+        //draws the currently being drawn path
+        paintBrush.color = currentBrush
+        paintBrush.strokeWidth = brushSize
+        canvas.drawPath(path, paintBrush)
     }
 }

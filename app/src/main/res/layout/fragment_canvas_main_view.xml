@@ -8,21 +8,6 @@
     android:background="#333333"
     tools:context=".ui.CanvasMainFragment">
 
-    <RelativeLayout
-        android:id="@+id/canvas_gallery_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_margin="20dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/photo_ref_foreground">
-        <include layout="@layout/draw_view"/>
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/canvas_gallery_border"
@@ -30,14 +15,29 @@
         android:layout_height="303dp"
         android:layout_margin="20dp"
         android:adjustViewBounds="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/canvas_brush_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/canvas_main_opacity_slider"
         android:src="@drawable/border_resource"
         tools:ignore="ContentDescription,ImageContrastCheck"
         tools:src="@drawable/border_resource" />
 
+    <RelativeLayout
+        android:id="@+id/canvas_gallery_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_margin="20dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/canvas_gallery_border"
+        app:layout_constraintEnd_toEndOf="@id/canvas_gallery_border"
+        app:layout_constraintStart_toStartOf="@id/canvas_gallery_border"
+        app:layout_constraintTop_toTopOf="@id/canvas_gallery_border"
+        tools:ignore="ContentDescription,ImageContrastCheck"
+        tools:src="@drawable/photo_ref_foreground">
+        <include layout="@layout/draw_view"/>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/canvas_main_brush_tool"
@@ -132,7 +132,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="30dp"
         android:contentDescription="Size"
+        android:valueFrom="1.0"
+        android:valueTo="50.0"
+        android:value="8.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
