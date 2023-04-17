@@ -1,4 +1,4 @@
-package com.example.canvasapp.UI.adapter
+package com.example.canvasapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

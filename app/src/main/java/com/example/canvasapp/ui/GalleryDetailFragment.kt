@@ -1,4 +1,4 @@
-package com.example.canvasapp.UI
+package com.example.canvasapp.ui
 
 
 import android.os.Bundle

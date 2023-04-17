@@ -1,4 +1,4 @@
-package com.example.canvasapp.UI.adapter
+package com.example.canvasapp.ui.adapter
 //
 //class CanvasAdapter {
 //}

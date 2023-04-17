@@ -1,4 +1,4 @@
-package com.example.canvasapp.UI
+package com.example.canvasapp.ui
 
 
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.canvasapp.R
-import com.example.canvasapp.UI.adapter.GalleryAdapter
+import com.example.canvasapp.ui.adapter.GalleryAdapter
 import com.example.canvasapp.databinding.FragmentGalleryListBinding
 import com.example.canvasapp.viewModel.GalleryItemViewModel
 

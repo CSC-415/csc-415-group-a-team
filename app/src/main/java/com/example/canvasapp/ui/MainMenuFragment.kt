@@ -1,15 +1,13 @@
-package com.example.canvasapp.UI
+package com.example.canvasapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.canvasapp.R
 import com.example.canvasapp.databinding.MainMenuViewBinding
-import com.example.canvasapp.ui.CanvasMainFragment
 
 class MainMenuFragment : Fragment() {
     private var _binding: MainMenuViewBinding? = null
