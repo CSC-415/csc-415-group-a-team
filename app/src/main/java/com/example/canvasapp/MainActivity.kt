@@ -8,7 +8,6 @@ import com.example.canvasapp.UI.MainMenuFragment
 import com.example.canvasapp.databinding.ActivityMainBinding
 
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

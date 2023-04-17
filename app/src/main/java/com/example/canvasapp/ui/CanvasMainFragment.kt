@@ -20,7 +20,7 @@ import com.example.canvasapp.R
 
 
 class CanvasMainFragment : Fragment() {
-    companion object{
+    companion object {
         var path = Path()
         var paintBrush = Paint()
     }
@@ -29,9 +29,12 @@ class CanvasMainFragment : Fragment() {
     private val binding get() = _binding!!
 
     //temp image urls for demonstration
-    private val brush = "https://toppng.com/uploads/preview/paint-brush-clip-art-png-11553987172jeybqknc0s.png"
-    private val fill = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalQBVMJn5Q3IpfVgaymKNevK5zNxEgbUc9w&usqp=CAU"
-    private val picker = "https://www.pngitem.com/pimgs/m/69-695490_dropper-dropper-png-transparent-png.png"
+    private val brush =
+        "https://toppng.com/uploads/preview/paint-brush-clip-art-png-11553987172jeybqknc0s.png"
+    private val fill =
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalQBVMJn5Q3IpfVgaymKNevK5zNxEgbUc9w&usqp=CAU"
+    private val picker =
+        "https://www.pngitem.com/pimgs/m/69-695490_dropper-dropper-png-transparent-png.png"
     private val color = "https://i.stack.imgur.com/SBvcU.png"
 
     override fun onCreateView(
@@ -53,10 +56,11 @@ class CanvasMainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val startActivityForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                if (it.resultCode == Activity.RESULT_OK){
-                    if (it.data != null && it.data!!.data != null){
-                        val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    if (it.data != null && it.data!!.data != null) {
+                        val drawView =
+                            binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
                         val bmp = drawView.save()
                         val uri: Uri = it.data!!.data!!
                         val op = requireActivity().contentResolver.openOutputStream(uri)
@@ -70,7 +74,7 @@ class CanvasMainFragment : Fragment() {
             DrawView.brushSize = value
         }
 
-        binding.saveButton.setOnClickListener{
+        binding.saveButton.setOnClickListener {
             createFile("sample.png", startActivityForResult)
         }
     }
@@ -80,16 +84,16 @@ class CanvasMainFragment : Fragment() {
         _binding = null
     }
 
-    fun createFile(fileName: String, launcher: ActivityResultLauncher<Intent>){
+    fun createFile(fileName: String, launcher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_TITLE, fileName)
         intent.addFlags(
             Intent.FLAG_GRANT_READ_URI_PERMISSION
-                or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
-                or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
+                    or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
         )
         launcher.launch(intent)
     }
