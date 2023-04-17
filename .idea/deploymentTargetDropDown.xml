@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-    <targetSelectedWithDropDown>
+    <runningDeviceTargetSelectedWithDropDown>
       <Target>
-        <type value="QUICK_BOOT_TARGET" />
+        <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
+<<<<<<< HEAD
             <type value="VIRTUAL_DEVICE_PATH" />
             <value value="C:\Users\james\.android\avd\Copy_of_Copy_of_Pixel_4_API_29.avd" />
           </Key>
@@ -13,5 +14,14 @@
       </Target>
     </targetSelectedWithDropDown>
     <timeTargetWasSelectedWithDropDown value="2023-04-08T01:49:17.733008600Z" />
+=======
+            <type value="SERIAL_NUMBER" />
+            <value value="RFCTA12RGMK" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </runningDeviceTargetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2023-04-17T00:00:31.675425600Z" />
+>>>>>>> 49ebf0acd92a3030b492920268c403c351b86547
   </component>
 </project>
