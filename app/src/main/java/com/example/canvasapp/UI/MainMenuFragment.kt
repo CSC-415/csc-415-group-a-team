@@ -16,9 +16,7 @@ class MainMenuFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = MainMenuViewBinding.inflate(inflater, container, false)
 
@@ -27,8 +25,7 @@ class MainMenuFragment : Fragment() {
             requireActivity().supportFragmentManager.commit {
                 setReorderingAllowed(false)
                 replace(
-                    R.id.fragment_container_view,
-                    CanvasMainFragment()
+                    R.id.fragment_container_view, CanvasMainFragment()
                 )
                 addToBackStack(null)
             }
@@ -38,8 +35,7 @@ class MainMenuFragment : Fragment() {
             requireActivity().supportFragmentManager.commit {
                 setReorderingAllowed(false)
                 replace(
-                    R.id.fragment_container_view,
-                    GalleryListFragment()
+                    R.id.fragment_container_view, GalleryListFragment()
                 )
                 addToBackStack(null)
             }

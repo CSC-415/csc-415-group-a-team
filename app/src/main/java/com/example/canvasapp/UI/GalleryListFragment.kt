@@ -38,8 +38,10 @@ class GalleryListFragment : Fragment() {
 
             requireActivity().supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                replace(R.id.fragment_container_view,
-                GalleryDetailFragment.newInstance(gallery[position].id))
+                replace(
+                    R.id.fragment_container_view,
+                    GalleryDetailFragment.newInstance(gallery[position].id)
+                )
                 addToBackStack(null)
             }
         }
@@ -54,8 +56,6 @@ class GalleryListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 
 
 }
