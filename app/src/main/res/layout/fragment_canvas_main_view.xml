@@ -39,6 +39,15 @@
         <include layout="@layout/draw_view"/>
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        app:layout_constraintStart_toStartOf="@id/canvas_gallery_image"
+        app:layout_constraintEnd_toEndOf="@id/canvas_gallery_image"
+        app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
+        />
     <ImageButton
         android:id="@+id/canvas_main_brush_tool"
         android:layout_width="60dp"

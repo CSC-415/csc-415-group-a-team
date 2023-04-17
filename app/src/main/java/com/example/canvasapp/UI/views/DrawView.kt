@@ -1,6 +1,7 @@
 package com.example.canvasapp.views
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -15,6 +16,10 @@ import com.example.canvasapp.ui.CanvasMainFragment.Companion.path
 class DrawView  : View {
 
     var params : ViewGroup.LayoutParams? = null
+
+    private  lateinit var drawBitmap: Bitmap
+    private lateinit var drawCanvas: Canvas
+
 
     companion object{
         var pathList = ArrayList<Path>()
@@ -40,6 +45,9 @@ class DrawView  : View {
         paintBrush.style = Paint.Style.STROKE
         paintBrush.strokeJoin = Paint.Join.ROUND
         paintBrush.strokeWidth = brushSize
+
+        drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        drawCanvas = Canvas(drawBitmap)
 
         params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
     }
@@ -70,6 +78,10 @@ class DrawView  : View {
         //Use postInvalidate after changes on UI
         postInvalidate()
         return false
+    }
+
+    fun save(): Bitmap? {
+        return drawBitmap
     }
 
     override fun onDraw(canvas: Canvas) {
