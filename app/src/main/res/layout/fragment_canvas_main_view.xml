@@ -121,7 +121,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/canvas_main_picker_tool"
         android:layout_marginHorizontal="30dp"
-        android:background="#AAAAAA"
+        android:background="#FFFFFF"
         android:contentDescription="Choose Color"
         tools:ignore="HardcodedText" />
 

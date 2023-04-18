@@ -18,6 +18,8 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.canvasapp.R
+import yuku.ambilwarna.AmbilWarnaDialog
+import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener
 
 
 class CanvasMainFragment : Fragment() {
@@ -29,6 +31,7 @@ class CanvasMainFragment : Fragment() {
 
     private var _binding: FragmentCanvasMainViewBinding? = null
     private val binding get() = _binding!!
+    private val defaultBackground = "#FFFFFF"
 
     //temp image urls for demonstration
     private val brush =
@@ -83,22 +86,31 @@ class CanvasMainFragment : Fragment() {
 
         //Eraser button
         binding.canvasMainEraserTool.setOnClickListener {
+            buttonBackgroundReset()
+            binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
             lastColor = DrawView.currentBrush
             DrawView.currentBrush = Color.WHITE
         }
 
         //Brush button (sets to last color)
         binding.canvasMainBrushTool.setOnClickListener {
+            buttonBackgroundReset()
+            binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
             DrawView.currentBrush = lastColor
         }
 
         //Color Picker (temp set to red)
         binding.canvasMainColorTool.setOnClickListener {
-            DrawView.currentBrush = Color.RED
+            buttonBackgroundReset()
+            binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
+            openColorPickerDialogue()
+
         }
 
         //Color Tool (temp set to blue)
         binding.canvasMainPickerTool.setOnClickListener {
+            buttonBackgroundReset()
+            binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
             DrawView.currentBrush = Color.CYAN
         }
 
@@ -106,7 +118,6 @@ class CanvasMainFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             createFile("sample.png", startActivityForResult)
         }
-
 
     }
 
@@ -128,4 +139,24 @@ class CanvasMainFragment : Fragment() {
         )
         launcher.launch(intent)
     }
+    fun buttonBackgroundReset() {
+        binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(defaultBackground))
+        binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor(defaultBackground))
+        binding.canvasMainColorTool.setBackgroundColor(Color.parseColor(defaultBackground))
+        binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(defaultBackground))
+    }
+
+    fun openColorPickerDialogue() {
+        val colorPickerDialogue = AmbilWarnaDialog(requireActivity(), DrawView.currentBrush,
+            object : OnAmbilWarnaListener {
+            override fun onCancel(dialogue: AmbilWarnaDialog?) {}
+
+            override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
+                DrawView.currentBrush = color
+            }
+        })
+        colorPickerDialogue.show()
+    }
+
+
 }
