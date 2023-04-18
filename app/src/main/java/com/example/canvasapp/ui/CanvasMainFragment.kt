@@ -1,6 +1,7 @@
 package com.example.canvasapp.ui
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Paint
 import android.graphics.Path
 import android.os.Bundle
@@ -15,9 +16,14 @@ import com.example.canvasapp.views.DrawView
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.canvasapp.R
+import java.io.File
+import java.io.FileOutputStream
+import java.util.*
 
 
 class CanvasMainFragment : Fragment() {
@@ -104,7 +110,17 @@ class CanvasMainFragment : Fragment() {
 
         //Save button
         binding.saveButton.setOnClickListener {
-            createFile("sample.png", startActivityForResult)
+            val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+            val bmp = drawView.save()
+            var file = context?.getDir("Images", Context.MODE_PRIVATE)
+            val time = Date()
+            val formatted = formatDate(time)
+            file = File(file, formatted)
+            val out = FileOutputStream(file)
+            bmp?.compress(Bitmap.CompressFormat.PNG, 100, out)
+            out.flush()
+            out.close()
+            Log.d("Save", "image save")
         }
 
 
@@ -128,4 +144,11 @@ class CanvasMainFragment : Fragment() {
         )
         launcher.launch(intent)
     }
+
+    private fun formatDate(date: Date): String {
+        val input = SimpleDateFormat("ddmmyyyyHHmmss")
+        val formatted = input.format(date)
+        return formatted.toString()
+    }
+
 }

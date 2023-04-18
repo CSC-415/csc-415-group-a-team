@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.canvasapp.R
 import com.example.canvasapp.ui.adapter.GalleryAdapter
 import com.example.canvasapp.databinding.FragmentGalleryListBinding
+import com.example.canvasapp.model.Gallery_item
 import com.example.canvasapp.viewModel.GalleryItemViewModel
 
 class GalleryListFragment : Fragment() {
@@ -33,7 +34,7 @@ class GalleryListFragment : Fragment() {
 
         val gallery = galleryItemViewModel.fillData()
 
-        val adapter = GalleryAdapter(gallery) { position ->
+        val adapter = GalleryAdapter(gallery as MutableList<Gallery_item>) { position ->
 
 
             requireActivity().supportFragmentManager.commit {
@@ -46,6 +47,7 @@ class GalleryListFragment : Fragment() {
             }
         }
         binding.galleryRecyclerView.adapter = adapter
+
 
         return binding.root
 
