@@ -1,17 +1,15 @@
 package com.example.canvasapp.views
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.example.canvasapp.ui.CanvasMainFragment.Companion.paintBrush
 import com.example.canvasapp.ui.CanvasMainFragment.Companion.path
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DrawView : View {
 

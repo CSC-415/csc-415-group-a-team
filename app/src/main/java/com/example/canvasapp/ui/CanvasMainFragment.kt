@@ -31,16 +31,17 @@ class CanvasMainFragment : Fragment() {
 
     private var _binding: FragmentCanvasMainViewBinding? = null
     private val binding get() = _binding!!
-    private val defaultBackground = "#FFFFFF"
+    private val buttonDefaultBackground = "#FFFFFF"
+    private val buttonClickedBackground = "#777777"
 
     //temp image urls for demonstration
     private val brush =
-        "https://toppng.com/uploads/preview/paint-brush-clip-art-png-11553987172jeybqknc0s.png"
+        "https://www.pngall.com/wp-content/uploads/2016/04/Paint-Brush-Free-Download-PNG.png"
     private val eraser =
-        "https://edfoundationlake.com/wp-content/uploads/2020/05/95094a48409b03fadc24b76e229d4180_soft-pink-beveled-eraser-blick-pink-eraser-clipart_600-456_large.jpeg"
+        "https://i.pinimg.com/originals/bd/b9/e7/bdb9e71fb37b7eb8e0a19a45409cba50.png"
     private val picker =
-        "https://www.pngitem.com/pimgs/m/69-695490_dropper-dropper-png-transparent-png.png"
-    private val color = "https://i.stack.imgur.com/SBvcU.png"
+        "https://static.vecteezy.com/system/resources/previews/008/505/803/original/dropper-illustration-medical-pipette-eyedropper-png.png"
+    private val color = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/BYR_color_wheel.svg/1024px-BYR_color_wheel.svg.png"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,22 +88,20 @@ class CanvasMainFragment : Fragment() {
         //Eraser button
         binding.canvasMainEraserTool.setOnClickListener {
             buttonBackgroundReset()
-            binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
-            lastColor = DrawView.currentBrush
+            binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
             DrawView.currentBrush = Color.WHITE
         }
 
         //Brush button (sets to last color)
         binding.canvasMainBrushTool.setOnClickListener {
             buttonBackgroundReset()
-            binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
+            binding.canvasMainBrushTool.setBackgroundColor(lastColor)
             DrawView.currentBrush = lastColor
         }
 
         //Color Picker (temp set to red)
         binding.canvasMainColorTool.setOnClickListener {
             buttonBackgroundReset()
-            binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
             openColorPickerDialogue()
 
         }
@@ -110,7 +109,7 @@ class CanvasMainFragment : Fragment() {
         //Color Tool (temp set to blue)
         binding.canvasMainPickerTool.setOnClickListener {
             buttonBackgroundReset()
-            binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor("#AAAAAA"))
+            binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
             DrawView.currentBrush = Color.CYAN
         }
 
@@ -139,22 +138,25 @@ class CanvasMainFragment : Fragment() {
         )
         launcher.launch(intent)
     }
+
     fun buttonBackgroundReset() {
-        binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(defaultBackground))
-        binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor(defaultBackground))
-        binding.canvasMainColorTool.setBackgroundColor(Color.parseColor(defaultBackground))
-        binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(defaultBackground))
+        binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        binding.canvasMainColorTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
     }
 
     fun openColorPickerDialogue() {
         val colorPickerDialogue = AmbilWarnaDialog(requireActivity(), DrawView.currentBrush,
             object : OnAmbilWarnaListener {
-            override fun onCancel(dialogue: AmbilWarnaDialog?) {}
+                override fun onCancel(dialogue: AmbilWarnaDialog?) {}
 
-            override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
-                DrawView.currentBrush = color
-            }
-        })
+                override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
+                    DrawView.currentBrush = color
+                    binding.canvasMainBrushTool.setBackgroundColor(color)
+                    lastColor = color
+                }
+            })
         colorPickerDialogue.show()
     }
 
