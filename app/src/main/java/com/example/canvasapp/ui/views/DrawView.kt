@@ -27,6 +27,7 @@ class DrawView : View {
         var brushSizeList = ArrayList<Float>()
         var currentBrush = Color.BLACK
         var brushSize = 8f
+        var brushOpacity = 255
     }
 
     constructor(context: Context) : this(context, null) {
@@ -51,6 +52,7 @@ class DrawView : View {
         paintBrush.style = Paint.Style.STROKE
         paintBrush.strokeJoin = Paint.Join.ROUND
         paintBrush.strokeWidth = brushSize
+        paintBrush.alpha = brushOpacity
 
         drawBitmap = Bitmap.createBitmap(900, 900, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(drawBitmap)

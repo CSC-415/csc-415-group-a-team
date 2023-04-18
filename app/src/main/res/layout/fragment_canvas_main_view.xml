@@ -71,7 +71,7 @@
         tools:src="@drawable/border_resource" />
 
     <ImageButton
-        android:id="@+id/canvas_main_fill_tool"
+        android:id="@+id/canvas_main_eraser_tool"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -82,7 +82,7 @@
         tools:ignore="HardcodedText" />
 
     <ImageView
-        android:id="@+id/canvas_fill_border"
+        android:id="@+id/canvas_eraser_border"
         android:layout_width="63dp"
         android:layout_height="63dp"
         android:layout_marginHorizontal="30dp"
@@ -144,7 +144,7 @@
         android:layout_marginVertical="30dp"
         android:contentDescription="Size"
         android:valueFrom="1.0"
-        android:valueTo="50.0"
+        android:valueTo="75.0"
         android:value="8.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,6 +178,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/canvas_main_size_text"
+        android:valueFrom="1.0"
+        android:valueTo="255.0"
+        android:value="255.0"
         tools:ignore="DuplicateSpeakableTextCheck,HardcodedText" />
 
 <!--    HARD CODED TEXT-->

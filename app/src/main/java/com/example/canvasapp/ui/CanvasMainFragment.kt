@@ -14,6 +14,7 @@ import com.example.canvasapp.databinding.FragmentCanvasMainViewBinding
 import com.example.canvasapp.views.DrawView
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.canvasapp.R
@@ -23,6 +24,7 @@ class CanvasMainFragment : Fragment() {
     companion object {
         var path = Path()
         var paintBrush = Paint()
+        var lastColor = Color.BLACK
     }
 
     private var _binding: FragmentCanvasMainViewBinding? = null
@@ -31,8 +33,8 @@ class CanvasMainFragment : Fragment() {
     //temp image urls for demonstration
     private val brush =
         "https://toppng.com/uploads/preview/paint-brush-clip-art-png-11553987172jeybqknc0s.png"
-    private val fill =
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalQBVMJn5Q3IpfVgaymKNevK5zNxEgbUc9w&usqp=CAU"
+    private val eraser =
+        "https://edfoundationlake.com/wp-content/uploads/2020/05/95094a48409b03fadc24b76e229d4180_soft-pink-beveled-eraser-blick-pink-eraser-clipart_600-456_large.jpeg"
     private val picker =
         "https://www.pngitem.com/pimgs/m/69-695490_dropper-dropper-png-transparent-png.png"
     private val color = "https://i.stack.imgur.com/SBvcU.png"
@@ -44,7 +46,7 @@ class CanvasMainFragment : Fragment() {
     ): View {
         _binding = FragmentCanvasMainViewBinding.inflate(inflater, container, false)
         Glide.with(this).load(brush).into(binding.canvasMainBrushTool)
-        Glide.with(this).load(fill).into(binding.canvasMainFillTool)
+        Glide.with(this).load(eraser).into(binding.canvasMainEraserTool)
         Glide.with(this).load(picker).into(binding.canvasMainPickerTool)
         Glide.with(this).load(color).into(binding.canvasMainColorTool)
 
@@ -74,9 +76,38 @@ class CanvasMainFragment : Fragment() {
             DrawView.brushSize = value
         }
 
+        // Opacity Slider
+        binding.canvasMainOpacitySlider.addOnChangeListener { _, value, _ ->
+            DrawView.brushOpacity = value.toInt()
+        }
+
+        //Eraser button
+        binding.canvasMainEraserTool.setOnClickListener {
+            lastColor = DrawView.currentBrush
+            DrawView.currentBrush = Color.WHITE
+        }
+
+        //Brush button (sets to last color)
+        binding.canvasMainBrushTool.setOnClickListener {
+            DrawView.currentBrush = lastColor
+        }
+
+        //Color Picker (temp set to red)
+        binding.canvasMainColorTool.setOnClickListener {
+            DrawView.currentBrush = Color.RED
+        }
+
+        //Color Tool (temp set to blue)
+        binding.canvasMainPickerTool.setOnClickListener {
+            DrawView.currentBrush = Color.CYAN
+        }
+
+        //Save button
         binding.saveButton.setOnClickListener {
             createFile("sample.png", startActivityForResult)
         }
+
+
     }
 
     override fun onDestroyView() {
