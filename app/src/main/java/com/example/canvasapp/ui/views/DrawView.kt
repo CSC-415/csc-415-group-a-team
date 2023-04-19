@@ -26,6 +26,9 @@ class DrawView : View {
         var currentBrush = Color.BLACK
         var brushSize = 8f
         var brushOpacity = 255
+        var toolBrush = true
+        var toolPicker = false
+        var toolBucket = false
     }
 
     constructor(context: Context) : this(context, null) {
@@ -37,9 +40,7 @@ class DrawView : View {
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
+        context, attrs, defStyleAttr
     ) {
         init()
     }
@@ -54,36 +55,53 @@ class DrawView : View {
 
         drawBitmap = Bitmap.createBitmap(900, 900, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(drawBitmap)
+        drawCanvas.drawColor(Color.WHITE)
 
         params = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var x = event.x
         var y = event.y
-
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                path.moveTo(x, y)
-                return true
+        if (toolBrush) {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    path.moveTo(x, y)
+                    return true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    path.lineTo(x, y)
+                    //pathList.add(path)
+                    //colorList.add(currentBrush)
+                    //brushSizeList.add(brushSize)
+                }
+                MotionEvent.ACTION_UP -> {
+                    pathList.add(Path(path))
+                    colorList.add(currentBrush)
+                    brushSizeList.add(brushSize)
+                    path.reset()
+                }
+                else -> return false
             }
-            MotionEvent.ACTION_MOVE -> {
-                path.lineTo(x, y)
-                //pathList.add(path)
-                //colorList.add(currentBrush)
-                //brushSizeList.add(brushSize)
-            }
-            MotionEvent.ACTION_UP -> {
-                pathList.add(Path(path))
-                colorList.add(currentBrush)
-                brushSizeList.add(brushSize)
-                path.reset()
-            }
-            else -> return false
         }
+        if (toolPicker) {
+            val savedCanvas =
+            when (event.action){
+                MotionEvent.ACTION_DOWN -> {
+                    return true
+                }
+                MotionEvent.ACTION_MOVE -> {
+
+                }
+                MotionEvent.ACTION_UP -> {
+                }
+                else -> return false
+            }
+
+        }
+
         //Use postInvalidate after changes on UI
         postInvalidate()
         return false
@@ -110,17 +128,58 @@ class DrawView : View {
     }
 
     override fun onDraw(canvas: Canvas) {
+        if (toolBrush){
+            for (i in pathList.indices) {
+                paintBrush.color = colorList[i]
+                paintBrush.strokeWidth = brushSizeList[i]
+                canvas.drawPath(pathList[i], paintBrush)
+                invalidate() //changes done on UI
+            }
 
-        for (i in pathList.indices) {
-            paintBrush.color = colorList[i]
-            paintBrush.strokeWidth = brushSizeList[i]
-            canvas.drawPath(pathList[i], paintBrush)
-            invalidate() //changes done on UI
+            //draws the currently being drawn path
+            paintBrush.color = currentBrush
+            paintBrush.strokeWidth = brushSize
+            canvas.drawPath(path, paintBrush)
         }
-
-        //draws the currently being drawn path
-        paintBrush.color = currentBrush
-        paintBrush.strokeWidth = brushSize
-        canvas.drawPath(path, paintBrush)
     }
+
+//    private fun FloodFill(pt: Point, targetColor: Int, replacementColor: Int) {
+//        val q: Queue<Point> = LinkedList<Point>()
+//        q.add(pt)
+//        while (q.size > 0) {
+//            val n: Point = q.poll()
+//            if (drawBitmap.getPixel(n.x, n.y) !== targetColor) continue
+//            val w: Point = n
+//            val e = Point(n.x + 1, n.y)
+//            while (w.x > 0 && drawBitmap.getPixel(w.x, w.y) === targetColor) {
+//                drawBitmap.setPixel(w.x, w.y, replacementColor)
+//                if (w.y > 0 && drawBitmap.getPixel(w.x, w.y - 1) === targetColor) q.add(
+//                    Point(w.x, w.y - 1)
+//                )
+//                if (w.y < drawBitmap.getHeight() - 1 && drawBitmap.getPixel(
+//                        w.x, w.y + 1
+//                    ) === targetColor
+//                ) q.add(
+//                    Point(w.x, w.y + 1)
+//                )
+//                w.x--
+//            }
+//            while (e.x < drawBitmap.getWidth() - 1 && drawBitmap.getPixel(
+//                    e.x, e.y
+//                ) === targetColor
+//            ) {
+//                drawBitmap.setPixel(e.x, e.y, replacementColor)
+//                if (e.y > 0 && drawBitmap.getPixel(e.x, e.y - 1) === targetColor) q.add(
+//                    Point(e.x, e.y - 1)
+//                )
+//                if (e.y < drawBitmap.getHeight() - 1 && drawBitmap.getPixel(
+//                        e.x, e.y + 1
+//                    ) === targetColor
+//                ) q.add(
+//                    Point(e.x, e.y + 1)
+//                )
+//                e.x++
+//            }
+//        }
+//    }
 }

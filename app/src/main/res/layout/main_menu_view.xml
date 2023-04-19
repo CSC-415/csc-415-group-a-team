@@ -11,7 +11,7 @@
     <!-- New Canvas Button -->
     <Button
         android:id="@+id/NewCanvasButton"
-        android:text="@string/new_canvas"
+        android:text="@string/open_canvas"
         android:textColor="@color/white"
         android:layout_width="300dp"
         android:layout_height="75dp"

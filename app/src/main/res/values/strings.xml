@@ -2,7 +2,7 @@
     <string name="app_name">CanvasApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_canvas">New Canvas</string>
+    <string name="open_canvas">Open Canvas</string>
     <string name="view_canvases">Gallery</string>
     <string name="settings">Settings</string>
     <string name="canvas_app">Canvas</string>

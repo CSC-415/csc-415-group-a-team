@@ -30,6 +30,7 @@
         android:layout_margin="20dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/canvas_gallery_border"
         app:layout_constraintEnd_toEndOf="@id/canvas_gallery_border"
         app:layout_constraintStart_toStartOf="@id/canvas_gallery_border"
