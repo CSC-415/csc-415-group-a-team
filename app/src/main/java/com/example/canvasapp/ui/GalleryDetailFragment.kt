@@ -30,7 +30,6 @@ class GalleryDetailFragment : Fragment() {
 
             Glide.with(this).load(galleryItem.image).into(binding.FragGalleryImage)
             binding.FragGalleryName.text = galleryItem.name
-            binding.FragGalleryDescription.text = galleryItem.description
             binding.FragGalleryDate.text = galleryItem.editDate
         }
         return binding.root

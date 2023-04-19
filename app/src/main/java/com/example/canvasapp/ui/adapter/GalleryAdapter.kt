@@ -39,16 +39,12 @@ class GalleryAdapter(
                 onItemClick(adapterPosition)
             }
         }
-        @SuppressLint("NotifyDataSetChanged")
-        fun refreshData() {
 
-        }
 
         fun bind(galleryItem: Gallery_item) {
             Glide.with(binding.root).load(galleryItem.image).into(binding.galleryImage)
             binding.galleryName.text = galleryItem.name
-            binding.galleryDescription.text = galleryItem.description
-            binding.galleryDate.text = galleryItem.editDate.toString()
+            binding.galleryDate.text = galleryItem.editDate
         }
     }
 }
