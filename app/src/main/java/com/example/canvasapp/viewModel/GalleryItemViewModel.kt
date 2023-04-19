@@ -27,16 +27,16 @@ class GalleryItemViewModel : ViewModel() {
 
     fun fetchById(id: Int) = gallery.first { it.id == id }
 
-    private fun createGalleryItem(image: String, name: String, date: Date, id: Int) =
+    private fun createGalleryItem(image: String, name: String, date: String, id: Int) =
         Gallery_item(
             name = name,
             image = image,
-            editDate = formatDate(date),
+            editDate = date,
             id = id
         )
 
     private fun formatDate(date: Date): String {
-        val input = SimpleDateFormat("dd/mm/yyyy")
+        val input = SimpleDateFormat("MM/dd/yyyy")
         val formatted = input.format(date)
         return formatted.toString()
     }
@@ -47,13 +47,12 @@ class GalleryItemViewModel : ViewModel() {
             if (i == 0) {
                 i++
             } else {
-                Log.d("image", it.name)
                 gallery.add(
                     createGalleryItem(
                         it.absolutePath,
                         //"https://th.bing.com/th/id/OIP.GAvKZNNy_8tdt9sZgZwQjQHaJQ?w=186&h=233&c=7&r=0&o=5&dpr=1.7&pid=1.7",
                         it.name,
-                        Date(it.lastModified()),
+                        formatDate(Date(it.lastModified())),
                         i
                     )
                 )
