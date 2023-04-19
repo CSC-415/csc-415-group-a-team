@@ -1,25 +1,27 @@
 package com.example.canvasapp.ui
 
 import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.canvasapp.R
 import com.example.canvasapp.databinding.FragmentCanvasMainViewBinding
 import com.example.canvasapp.views.DrawView
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts
-import com.example.canvasapp.R
 import yuku.ambilwarna.AmbilWarnaDialog
 import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener
+import java.io.ByteArrayOutputStream
 
 
 class CanvasMainFragment : Fragment() {
@@ -41,7 +43,9 @@ class CanvasMainFragment : Fragment() {
         "https://i.pinimg.com/originals/bd/b9/e7/bdb9e71fb37b7eb8e0a19a45409cba50.png"
     private val picker =
         "https://static.vecteezy.com/system/resources/previews/008/505/803/original/dropper-illustration-medical-pipette-eyedropper-png.png"
-    private val color = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/BYR_color_wheel.svg/1024px-BYR_color_wheel.svg.png"
+    private val color =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/BYR_color_wheel.svg/1024px-BYR_color_wheel.svg.png"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,7 +121,17 @@ class CanvasMainFragment : Fragment() {
 
         //Save button
         binding.saveButton.setOnClickListener {
-            createFile("sample.png", startActivityForResult)
+            val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+            val bmp = drawView.save()
+            val outputStream = ByteArrayOutputStream()
+            bmp?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            val b = outputStream.toByteArray()
+            val bundle = Bundle()
+            bundle.putByteArray("data", b)
+            Log.d("main frag", bundle.toString())
+            val fragment = NameDialogFragment()
+            fragment.arguments = bundle
+            fragment.show(childFragmentManager, "tag")
         }
 
     }
