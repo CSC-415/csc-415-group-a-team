@@ -22,13 +22,17 @@ class DrawView : View {
     companion object {
         var pathList = ArrayList<Path>()
         var colorList = ArrayList<Int>()
+        var opacityList = ArrayList<Int>()
         var brushSizeList = ArrayList<Float>()
         var currentBrush = Color.BLACK
         var brushSize = 8f
         var brushOpacity = 255
-        var toolBrush = true
-        var toolPicker = false
-        var toolBucket = false
+
+        enum class Tool {
+            BRUSH, ERASER, PICKER
+        }
+
+        var currentTool = Tool.BRUSH
     }
 
     constructor(context: Context) : this(context, null) {
@@ -65,7 +69,7 @@ class DrawView : View {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var x = event.x
         var y = event.y
-        if (toolBrush) {
+        if (currentTool == Tool.BRUSH) {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     path.moveTo(x, y)
@@ -73,22 +77,39 @@ class DrawView : View {
                 }
                 MotionEvent.ACTION_MOVE -> {
                     path.lineTo(x, y)
-                    //pathList.add(path)
-                    //colorList.add(currentBrush)
-                    //brushSizeList.add(brushSize)
                 }
                 MotionEvent.ACTION_UP -> {
                     pathList.add(Path(path))
                     colorList.add(currentBrush)
                     brushSizeList.add(brushSize)
+                    opacityList.add(brushOpacity)
                     path.reset()
                 }
                 else -> return false
             }
         }
-        if (toolPicker) {
-            val savedCanvas =
-            when (event.action){
+        if (currentTool == Tool.ERASER) {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    path.moveTo(x, y)
+                    return true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    path.lineTo(x, y)
+                }
+                MotionEvent.ACTION_UP -> {
+                    pathList.add(Path(path))
+                    colorList.add(Color.WHITE)
+                    brushSizeList.add(brushSize)
+                    opacityList.add(255)
+                    path.reset()
+                }
+                else -> return false
+            }
+        }
+        if (currentTool == Tool.PICKER) {
+            //val savedCanvas =
+            when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     return true
                 }
@@ -108,41 +129,48 @@ class DrawView : View {
     }
 
     fun save(): Bitmap? {
-        // Create a new bitmap with the same dimensions as the drawBitmap
         val savedBitmap =
             Bitmap.createBitmap(drawBitmap.width, drawBitmap.height, Bitmap.Config.ARGB_8888)
 
-        // Create a new canvas with the savedBitmap
         val savedCanvas = Canvas(savedBitmap)
 
-        // Draw the contents of the drawCanvas (paths, colors, etc.) onto the savedCanvas
         savedCanvas.drawBitmap(drawBitmap, 0f, 0f, null)
+        savedCanvas.drawColor(Color.WHITE)
+
         for (i in pathList.indices) {
-            paintBrush.color = colorList[i]
-            paintBrush.strokeWidth = brushSizeList[i]
-            savedCanvas.drawPath(pathList[i], paintBrush)
+            drawLines(savedCanvas, i)
         }
 
-        // Return the updated savedBitmap
         return savedBitmap
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (toolBrush){
-            for (i in pathList.indices) {
-                paintBrush.color = colorList[i]
-                paintBrush.strokeWidth = brushSizeList[i]
-                canvas.drawPath(pathList[i], paintBrush)
-                invalidate() //changes done on UI
-            }
+        for (i in pathList.indices) {
+            drawLines(canvas, i)
+            invalidate() //changes done on UI
+        }
 
-            //draws the currently being drawn path
+        //draws the currently being drawn path
+        if (currentTool == Tool.BRUSH) {
             paintBrush.color = currentBrush
+            paintBrush.alpha = brushOpacity
+            paintBrush.strokeWidth = brushSize
+            canvas.drawPath(path, paintBrush)
+        }
+        if (currentTool == Tool.ERASER) {
+            paintBrush.color = Color.WHITE
+            paintBrush.alpha = 255
             paintBrush.strokeWidth = brushSize
             canvas.drawPath(path, paintBrush)
         }
     }
 
+    private fun drawLines(canvas: Canvas, i: Int) {
+        paintBrush.color = colorList[i]
+        paintBrush.alpha = opacityList[i]
+        paintBrush.strokeWidth = brushSizeList[i]
+        canvas.drawPath(pathList[i], paintBrush)
+    }
 //    private fun FloodFill(pt: Point, targetColor: Int, replacementColor: Int) {
 //        val q: Queue<Point> = LinkedList<Point>()
 //        q.add(pt)

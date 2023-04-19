@@ -26,7 +26,7 @@ class CanvasMainFragment : Fragment() {
     companion object {
         var path = Path()
         var paintBrush = Paint()
-        var lastColor = Color.BLACK
+        //var lastColor = Color.BLACK
     }
 
     private var _binding: FragmentCanvasMainViewBinding? = null
@@ -89,14 +89,15 @@ class CanvasMainFragment : Fragment() {
         binding.canvasMainEraserTool.setOnClickListener {
             buttonBackgroundReset()
             binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
-            DrawView.currentBrush = Color.WHITE
+            //DrawView.currentBrush = Color.WHITE
+            DrawView.currentTool = DrawView.Companion.Tool.ERASER
         }
 
         //Brush button (sets to last color)
         binding.canvasMainBrushTool.setOnClickListener {
             buttonBackgroundReset()
-            binding.canvasMainBrushTool.setBackgroundColor(lastColor)
-            DrawView.currentBrush = lastColor
+            binding.canvasMainBrushTool.setBackgroundColor(DrawView.currentBrush)
+            DrawView.currentTool = DrawView.Companion.Tool.BRUSH
         }
 
         //Color Picker (temp set to red)
@@ -110,7 +111,8 @@ class CanvasMainFragment : Fragment() {
         binding.canvasMainPickerTool.setOnClickListener {
             buttonBackgroundReset()
             binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
-            DrawView.currentBrush = Color.CYAN
+            //DrawView.currentBrush = Color.CYAN
+            DrawView.currentTool = DrawView.Companion.Tool.PICKER
         }
 
         //Save button
@@ -154,7 +156,7 @@ class CanvasMainFragment : Fragment() {
                 override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
                     DrawView.currentBrush = color
                     binding.canvasMainBrushTool.setBackgroundColor(color)
-                    lastColor = color
+                    //lastColor = color
                 }
             })
         colorPickerDialogue.show()
