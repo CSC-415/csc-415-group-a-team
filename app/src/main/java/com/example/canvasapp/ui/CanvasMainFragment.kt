@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.canvasapp.databinding.FragmentCanvasMainViewBinding
 import com.example.canvasapp.views.DrawView
@@ -20,7 +19,9 @@ import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.*
 import com.example.canvasapp.R
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -44,6 +45,8 @@ class CanvasMainFragment : Fragment() {
     private val picker =
         "https://www.pngitem.com/pimgs/m/69-695490_dropper-dropper-png-transparent-png.png"
     private val color = "https://i.stack.imgur.com/SBvcU.png"
+
+    private var canvasName: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,15 +115,15 @@ class CanvasMainFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
             val bmp = drawView.save()
-            var file = context?.getDir("Images", Context.MODE_PRIVATE)
-            val time = Date()
-            val formatted = formatDate(time)
-            file = File(file, formatted)
-            val out = FileOutputStream(file)
-            bmp?.compress(Bitmap.CompressFormat.PNG, 100, out)
-            out.flush()
-            out.close()
-            Log.d("Save", "image save")
+            val outputStream = ByteArrayOutputStream()
+            bmp?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            val b = outputStream.toByteArray()
+            val bundle = Bundle()
+            bundle.putByteArray("data", b)
+            Log.d("main frag", bundle.toString())
+            val fragment = NameDialogFragment()
+            fragment.arguments = bundle
+            fragment.show(childFragmentManager, "tag")
         }
 
 
@@ -150,5 +153,23 @@ class CanvasMainFragment : Fragment() {
         val formatted = input.format(date)
         return formatted.toString()
     }
+
+    private fun save(){
+        var file = context?.getDir("Images", Context.MODE_PRIVATE)
+        Log.d("Save", canvasName)
+        file = File(file, canvasName)
+        val out = FileOutputStream(file)
+        //bmp?.compress(Bitmap.CompressFormat.PNG, 100, out)
+        out.flush()
+        out.close()
+        Log.d("Save", "image save")
+    }
+
+    private fun setName(name: String) {
+         canvasName = name
+        Log.d("image name", canvasName)
+    }
+
+
 
 }
