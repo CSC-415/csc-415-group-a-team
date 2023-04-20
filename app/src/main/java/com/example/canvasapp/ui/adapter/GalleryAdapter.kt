@@ -1,5 +1,6 @@
-package com.example.canvasapp.UI.adapter
+package com.example.canvasapp.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,10 +9,8 @@ import com.example.canvasapp.databinding.GalleryCardviewBinding
 import com.example.canvasapp.model.Gallery_item
 
 class GalleryAdapter(
-    private val gallery: List<Gallery_item>,
-    private val onItemClick: (adapterPosition: Int) -> Unit
-) :
-    RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>() {
+    private val gallery: MutableList<Gallery_item>, private val onItemClick: (adapterPosition: Int) -> Unit
+) : RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -41,14 +40,11 @@ class GalleryAdapter(
             }
         }
 
+
         fun bind(galleryItem: Gallery_item) {
-            Glide
-                .with(binding.root)
-                .load(galleryItem.image)
-                .into(binding.galleryImage)
+            Glide.with(binding.root).load(galleryItem.image).into(binding.galleryImage)
             binding.galleryName.text = galleryItem.name
-            binding.galleryDescription.text = galleryItem.description
-            binding.galleryDate.text = galleryItem.editDate.toString()
+            binding.galleryDate.text = galleryItem.editDate
         }
     }
 }

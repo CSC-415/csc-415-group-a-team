@@ -1,4 +1,4 @@
-package com.example.canvasapp.UI
+package com.example.canvasapp.ui
 
 
 import android.os.Bundle
@@ -26,11 +26,10 @@ class GalleryDetailFragment : Fragment() {
         _binding = FragmentGalleryItemDetailBinding.inflate(inflater, container, false)
 
         if (arguments != null) {
-           val galleryItem = galleryItemViewModel.fetchById(requireArguments().getInt(BUNDLE_ID))
+            val galleryItem = galleryItemViewModel.fetchById(requireArguments().getInt(BUNDLE_ID))
 
             Glide.with(this).load(galleryItem.image).into(binding.FragGalleryImage)
             binding.FragGalleryName.text = galleryItem.name
-            binding.FragGalleryDescription.text = galleryItem.description
             binding.FragGalleryDate.text = galleryItem.editDate
         }
         return binding.root
