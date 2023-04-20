@@ -45,7 +45,10 @@ class CanvasMainFragment : Fragment() {
         "https://static.vecteezy.com/system/resources/previews/008/505/803/original/dropper-illustration-medical-pipette-eyedropper-png.png"
     private val color =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/BYR_color_wheel.svg/1024px-BYR_color_wheel.svg.png"
-
+    private val undo =
+        "https://cdn.discordapp.com/attachments/710398709598257235/1098392316827410433/undo.png"
+    private val redo =
+        "https://cdn.discordapp.com/attachments/710398709598257235/1098392317049716846/redo.png"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +60,8 @@ class CanvasMainFragment : Fragment() {
         Glide.with(this).load(eraser).into(binding.canvasMainEraserTool)
         Glide.with(this).load(picker).into(binding.canvasMainPickerTool)
         Glide.with(this).load(color).into(binding.canvasMainColorTool)
+        Glide.with(this).load(undo).into(binding.undoButton)
+        Glide.with(this).load(redo).into(binding.redoButton)
 
 
         return binding.root
@@ -64,6 +69,9 @@ class CanvasMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+        drawView.fragment = this
 
         val startActivityForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -78,6 +86,8 @@ class CanvasMainFragment : Fragment() {
                     }
                 }
             }
+
+        updateUndoRedoButtons()
 
         // Set up the slider using ViewBinding
         binding.canvasMainSizeSlider.addOnChangeListener { _, value, _ ->
@@ -111,11 +121,10 @@ class CanvasMainFragment : Fragment() {
 
         }
 
-        //Color Tool (temp set to blue)
+        //Color Tool
         binding.canvasMainPickerTool.setOnClickListener {
             buttonBackgroundReset()
             binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
-            //DrawView.currentBrush = Color.CYAN
             DrawView.currentTool = DrawView.Companion.Tool.PICKER
         }
 
@@ -132,6 +141,18 @@ class CanvasMainFragment : Fragment() {
             val fragment = NameDialogFragment()
             fragment.arguments = bundle
             fragment.show(childFragmentManager, "tag")
+        }
+
+        binding.undoButton.setOnClickListener {
+            val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+            drawView.undo()
+            updateUndoRedoButtons()
+        }
+
+        binding.redoButton.setOnClickListener {
+            val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+            drawView.redo()
+            updateUndoRedoButtons()
         }
 
     }
@@ -176,5 +197,17 @@ class CanvasMainFragment : Fragment() {
         colorPickerDialogue.show()
     }
 
-
+    fun updateUndoRedoButtons() {
+        val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
+        if (drawView.canUndo()) {
+            binding.undoButton.alpha = 1.0F
+        } else {
+            binding.undoButton.alpha = 0.25F
+        }
+        if (drawView.canRedo()) {
+            binding.redoButton.alpha = 1.0F
+        } else {
+            binding.redoButton.alpha = 0.25F
+        }
+    }
 }

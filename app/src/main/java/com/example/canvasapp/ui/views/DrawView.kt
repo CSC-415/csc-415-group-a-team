@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.example.canvasapp.ui.CanvasMainFragment
 import com.example.canvasapp.ui.CanvasMainFragment.Companion.paintBrush
 import com.example.canvasapp.ui.CanvasMainFragment.Companion.path
 import java.util.*
@@ -14,6 +15,8 @@ import kotlin.collections.ArrayList
 class DrawView : View {
 
     var params: ViewGroup.LayoutParams? = null
+
+    var fragment: CanvasMainFragment? = null //will get set by canvasmainfragment
 
     private lateinit var drawBitmap: Bitmap
     private lateinit var drawCanvas: Canvas
@@ -24,6 +27,12 @@ class DrawView : View {
         var colorList = ArrayList<Int>()
         var opacityList = ArrayList<Int>()
         var brushSizeList = ArrayList<Float>()
+
+        var undonePathList = ArrayList<Path>()
+        var undoneColorList = ArrayList<Int>()
+        var undoneOpacityList = ArrayList<Int>()
+        var undoneBrushSizeList = ArrayList<Float>()
+
         var currentBrush = Color.BLACK
         var brushSize = 8f
         var brushOpacity = 255
@@ -84,6 +93,8 @@ class DrawView : View {
                     brushSizeList.add(brushSize)
                     opacityList.add(brushOpacity)
                     path.reset()
+                    undonePathList.clear() // Clear the redo list
+                    fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
                 }
                 else -> return false
             }
@@ -103,6 +114,8 @@ class DrawView : View {
                     brushSizeList.add(brushSize)
                     opacityList.add(255)
                     path.reset()
+                    undonePathList.clear() // Clear the redo list
+                    fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
                 }
                 else -> return false
             }
@@ -171,6 +184,31 @@ class DrawView : View {
         paintBrush.strokeWidth = brushSizeList[i]
         canvas.drawPath(pathList[i], paintBrush)
     }
+    fun undo() {
+        if (pathList.isNotEmpty()) {
+            undonePathList.add(pathList.removeAt(pathList.size - 1))
+            undoneColorList.add(colorList.removeAt(colorList.size - 1))
+            undoneOpacityList.add(opacityList.removeAt(opacityList.size - 1))
+            undoneBrushSizeList.add(brushSizeList.removeAt(brushSizeList.size - 1))
+            invalidate()
+        }
+    }
+    fun redo() {
+        if (undonePathList.isNotEmpty()) {
+            pathList.add(undonePathList.removeAt(undonePathList.size - 1))
+            colorList.add(undoneColorList.removeAt(undoneColorList.size - 1))
+            opacityList.add(undoneOpacityList.removeAt(undoneOpacityList.size - 1))
+            brushSizeList.add(undoneBrushSizeList.removeAt(undoneBrushSizeList.size - 1))
+            invalidate()
+        }
+    }
+    fun canUndo(): Boolean {
+        return pathList.isNotEmpty()
+    }
+    fun canRedo(): Boolean {
+        return undonePathList.isNotEmpty()
+    }
+
 //    private fun FloodFill(pt: Point, targetColor: Int, replacementColor: Int) {
 //        val q: Queue<Point> = LinkedList<Point>()
 //        q.add(pt)

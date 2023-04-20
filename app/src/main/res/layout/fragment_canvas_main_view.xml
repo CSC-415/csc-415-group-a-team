@@ -48,7 +48,35 @@
         app:layout_constraintStart_toStartOf="@id/canvas_gallery_image"
         app:layout_constraintEnd_toEndOf="@id/canvas_gallery_image"
         app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
+        app:layout_constraintBottom_toTopOf="@id/canvas_main_brush_tool"
         />
+
+    <ImageButton
+        android:id="@+id/undo_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="@id/canvas_gallery_image"
+        app:layout_constraintEnd_toStartOf="@id/save_button"
+        app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
+        app:layout_constraintBottom_toTopOf="@id/canvas_main_brush_tool"
+        android:layout_marginHorizontal="20dp"
+        android:background="#FFFFFF"
+        android:contentDescription="Undo button"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/redo_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toEndOf="@id/save_button"
+        app:layout_constraintEnd_toEndOf="@id/canvas_gallery_image"
+        app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
+        app:layout_constraintBottom_toTopOf="@id/canvas_main_brush_tool"
+        android:layout_marginHorizontal="20dp"
+        android:background="#FFFFFF"
+        android:contentDescription="Redo button"
+        tools:ignore="HardcodedText" />
+
     <ImageButton
         android:id="@+id/canvas_main_brush_tool"
         android:layout_width="60dp"
