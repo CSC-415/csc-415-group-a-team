@@ -107,10 +107,10 @@ class ShareFragment: DialogFragment() {
 
         // Create the URI from the media
         val media = File(mediaPath)
-        val uri = Uri.fromFile(media)
+        val uri = media.toURI()
 
         // Add the URI to the Intent.
-        share.putExtra(Intent.EXTRA_STREAM, mediaPath)
+        share.putExtra(Intent.EXTRA_STREAM, uri)
 
         // Broadcast the Intent.
         startActivity(Intent.createChooser(share, "Share to"))
