@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/canvas_view_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#333333"
@@ -75,7 +76,7 @@
         android:id="@+id/color_tool"
         android:layout_width="47dp"
         android:layout_height="47dp"
-        app:layout_constraintBottom_toTopOf="@id/fill_can"
+        app:layout_constraintBottom_toTopOf="@id/picker_tool"
         app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
         android:layout_marginHorizontal="2dp"
         android:layout_marginVertical="10dp"
@@ -83,17 +84,17 @@
         android:contentDescription="Choose Color"
         tools:ignore="HardcodedText" />
 
-    <ImageButton
-        android:id="@+id/fill_can"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
-        app:layout_constraintBottom_toTopOf="@id/picker_tool"
-        android:layout_marginHorizontal="2dp"
-        android:background="#FFFFFF"
-        android:layout_marginVertical="10dp"
-        android:contentDescription="Redo button"
-        tools:ignore="HardcodedText" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/fill_can"-->
+<!--        android:layout_width="47dp"-->
+<!--        android:layout_height="47dp"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/picker_tool"-->
+<!--        android:layout_marginHorizontal="2dp"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:layout_marginVertical="10dp"-->
+<!--        android:contentDescription="Redo button"-->
+<!--        tools:ignore="HardcodedText" />-->
 
     <ImageButton
         android:id="@+id/picker_tool"

@@ -146,19 +146,8 @@ class DrawView : View {
                 }
             }
 
-            //creates stack overflow error
             Tool.FILLCAN -> {
-//                var tempBitmap = getTempBitmap()
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-//                        floodFill(tempBitmap, x.toInt(), y.toInt(), currentBrush)
-//                        drawBitmap = tempBitmap
-                        currentTool = Tool.BRUSH
-                        fragment?.buttonBackgroundReset()
-                        return true
-                    }
-                    else -> return false
-                }
+                TODO()
             }
         }
 
@@ -254,29 +243,4 @@ class DrawView : View {
             return Color.TRANSPARENT
         }
     }
-//        private fun floodFillUtil(
-//            bitmap: Bitmap, x: Int, y: Int,
-//            prevC: Int, newC: Int
-//        ) {
-//            // Base cases
-//            if (x < 0 || x >= drawBitmap.width || y < 0 || y >= drawBitmap.height) return
-//            if (bitmap.getPixel(x,y) != prevC) return
-//
-//            // Replace the color at (x, y)
-//            bitmap.setPixel(x,y,newC)
-//
-//            // Recur for north, east, south and west
-//            floodFillUtil(bitmap, x + 1, y, prevC, newC)
-//            floodFillUtil(bitmap, x - 1, y, prevC, newC)
-//            floodFillUtil(bitmap, x, y + 1, prevC, newC)
-//            floodFillUtil(bitmap, x, y - 1, prevC, newC)
-//        }
-//
-//        // It mainly finds the previous color on (x, y) and
-//        // calls floodFillUtil()
-//        fun floodFill(bitmap: Bitmap, x: Int, y: Int, newC: Int) {
-//            val prevC = bitmap.getPixel(x,y)
-//            if (prevC == newC) return
-//            floodFillUtil(bitmap, x, y, prevC, newC)
-//        }
 }

@@ -1,5 +1,6 @@
 package com.example.canvasapp.ui
 
+import SharedViewModel
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -19,6 +20,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.canvasapp.R
 import com.example.canvasapp.databinding.FragmentCanvasMainViewBinding
@@ -70,9 +73,14 @@ class CanvasMainFragment : Fragment() {
         Glide.with(this).load(color).into(binding.colorTool)
         Glide.with(this).load(undo).into(binding.undoButton)
         Glide.with(this).load(redo).into(binding.redoButton)
-        Glide.with(this).load(fillcan).into(binding.fillCan)
+        //Glide.with(this).load(fillcan).into(binding.fillCan)
         Glide.with(this).load(viewtools).into(binding.viewButton)
 
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.backgroundColor.observe(viewLifecycleOwner, Observer { color ->
+            binding.canvasViewLayout.setBackgroundColor(color)
+        })
 
         return binding.root
     }
@@ -133,17 +141,17 @@ class CanvasMainFragment : Fragment() {
         }
 
         //Fill Can
-        binding.fillCan.setOnClickListener {
-            DrawView.currentTool = DrawView.Companion.Tool.FILLCAN
-            buttonBackgroundReset()
-        }
+//        binding.fillCan.setOnClickListener {
+//            DrawView.currentTool = DrawView.Companion.Tool.FILLCAN
+//            buttonBackgroundReset()
+//        }
 
         binding.viewButton.setOnClickListener{
             if(binding.brushTool.visibility == VISIBLE) {
                 binding.viewButton.setBackgroundColor(Color.parseColor(buttonClickedBackground))
                 binding.brushTool.visibility = INVISIBLE
                 binding.eraserTool.visibility = INVISIBLE
-                binding.fillCan.visibility = INVISIBLE
+                //binding.fillCan.visibility = INVISIBLE
                 binding.colorTool.visibility = INVISIBLE
                 binding.pickerTool.visibility = INVISIBLE
             }
@@ -151,7 +159,7 @@ class CanvasMainFragment : Fragment() {
                 binding.viewButton.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
                 binding.brushTool.visibility = VISIBLE
                 binding.eraserTool.visibility = VISIBLE
-                binding.fillCan.visibility = VISIBLE
+                //binding.fillCan.visibility = VISIBLE
                 binding.colorTool.visibility = VISIBLE
                 binding.pickerTool.visibility = VISIBLE
             }
@@ -199,7 +207,7 @@ class CanvasMainFragment : Fragment() {
         binding.brushTool.setBackgroundColor(blendColor)
         binding.colorTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
         binding.eraserTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
-        binding.fillCan.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        //binding.fillCan.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
 
         when (DrawView.currentTool) {
             DrawView.Companion.Tool.BRUSH ->
@@ -209,7 +217,8 @@ class CanvasMainFragment : Fragment() {
             DrawView.Companion.Tool.PICKER ->
                 binding.pickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
             DrawView.Companion.Tool.FILLCAN ->
-                binding.fillCan.setBackgroundColor(Color.parseColor(buttonClickedBackground))
+                TODO()
+                //binding.fillCan.setBackgroundColor(Color.parseColor(buttonClickedBackground))
         }
     }
 

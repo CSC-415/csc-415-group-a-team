@@ -10,8 +10,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.example.canvasapp.MainActivity
 import com.example.canvasapp.R
 import com.example.canvasapp.databinding.MainMenuViewBinding
+import SharedViewModel
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 class MainMenuFragment : Fragment() {
     private var _binding: MainMenuViewBinding? = null
@@ -23,6 +27,11 @@ class MainMenuFragment : Fragment() {
     ): View {
         _binding = MainMenuViewBinding.inflate(inflater, container, false)
 
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.backgroundColor.observe(viewLifecycleOwner, Observer { color ->
+            binding.mainMenuLayout.setBackgroundColor(color)
+        })
 
         binding.openCanvasButton.setOnClickListener {
             requireActivity().supportFragmentManager.commit {
@@ -48,14 +57,15 @@ class MainMenuFragment : Fragment() {
         binding.themesButton.setOnClickListener {
             val alertDialog = AlertDialog.Builder(activity)
             alertDialog.setTitle("Choose a Theme")
-            val themes = arrayOf("Dark", "Light", "Deep Sea", "Rainforest")
+            val themes = arrayOf("Dark", "Light", "Deep Sea", "Rainforest", "Tangerine")
             alertDialog.setSingleChoiceItems(themes, checkedItem[0]) { dialog, which ->
                 checkedItem[0] = which
-                when (themes[which]){
-                    "Dark" -> binding.mainMenuLayout.setBackgroundColor(Color.parseColor("#333333"))
-                    "Light" -> binding.mainMenuLayout.setBackgroundColor(Color.parseColor("#f2f5ff"))
-                    "Deep Sea" -> binding.mainMenuLayout.setBackgroundColor(Color.parseColor("#2d4491"))
-                    "Rainforest" -> binding.mainMenuLayout.setBackgroundColor(Color.parseColor("#18471d"))
+                when (themes[which]) {
+                    "Dark" -> sharedViewModel.backgroundColor.value = Color.parseColor("#333333")
+                    "Light" -> sharedViewModel.backgroundColor.value = Color.parseColor("#f2f5ff")
+                    "Deep Sea" -> sharedViewModel.backgroundColor.value = Color.parseColor("#2d4491")
+                    "Rainforest" -> sharedViewModel.backgroundColor.value = Color.parseColor("#18471d")
+                    "Tangerine" -> sharedViewModel.backgroundColor.value = Color.parseColor("#ff6800")
                 }
                 dialog.dismiss()
 
