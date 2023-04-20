@@ -166,10 +166,9 @@ class CanvasMainFragment : Fragment() {
             val b = outputStream.toByteArray()
             val bundle = Bundle()
             bundle.putByteArray("data", b)
-            Log.d("main frag", bundle.toString())
             val fragment = NameDialogFragment()
             fragment.arguments = bundle
-            fragment.show(childFragmentManager, "tag")
+            fragment.show(childFragmentManager, "save")
         }
 
         //Undo Button
@@ -192,19 +191,7 @@ class CanvasMainFragment : Fragment() {
         _binding = null
     }
 
-    fun createFile(fileName: String, launcher: ActivityResultLauncher<Intent>) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_TITLE, fileName)
-        intent.addFlags(
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-        )
-        launcher.launch(intent)
-    }
+
 
     fun buttonBackgroundReset() {
         binding.pickerTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
