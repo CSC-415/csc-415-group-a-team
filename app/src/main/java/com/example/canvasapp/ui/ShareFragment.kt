@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.example.canvasapp.databinding.ShareViewBinding
@@ -58,12 +59,12 @@ class ShareFragment: DialogFragment() {
                 createToast("Image Saved!")
             }
             //share to insta
-            binding.instagram.setOnClickListener{
-                val type = "image/*"
-                val imageName =  imagePath
-                Log.d("share", imageName)
-                createInstagramIntent(type, imageName)
-            }
+//            binding.instagram.setOnClickListener{
+//                val type = "image/*"
+//                val imageName =  imagePath
+//                Log.d("share", imageName)
+//                createInstagramIntent(type, imageName)
+//            }
         }
     }
 
@@ -94,9 +95,10 @@ class ShareFragment: DialogFragment() {
         share.type = type
 
         val media = File(mediaPath)
-        val uri = media.toURI()
+        val uri = FileProvider.getUriForFile(requireContext(), "com.example.canvasapp.fileprovider", media)
 
         share.putExtra(Intent.EXTRA_STREAM, uri)
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivity(Intent.createChooser(share, "Share to"))
     }
 

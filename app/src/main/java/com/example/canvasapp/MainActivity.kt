@@ -4,6 +4,7 @@ import SharedViewModel
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.example.canvasapp.ui.MainMenuFragment

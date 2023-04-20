@@ -30,15 +30,15 @@
         app:layout_constraintTop_toBottomOf="@id/ShareTitle"
         />
 
-    <Button
-        android:id="@+id/instagram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Instagram"
-        android:layout_marginVertical="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Save_to_phone"
-        />
+<!--    <Button-->
+<!--        android:id="@+id/instagram"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Instagram"-->
+<!--        android:layout_marginVertical="16dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/Save_to_phone"-->
+<!--        />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
