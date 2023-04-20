@@ -65,19 +65,6 @@ class CanvasMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val startActivityForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == Activity.RESULT_OK) {
-                    if (it.data != null && it.data!!.data != null) {
-                        val drawView =
-                            binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
-                        val bmp = drawView.save()
-                        val uri: Uri = it.data!!.data!!
-                        val op = requireActivity().contentResolver.openOutputStream(uri)
-                        bmp?.compress(Bitmap.CompressFormat.PNG, 100, op)
-                    }
-                }
-            }
 
         // Set up the slider using ViewBinding
         binding.canvasMainSizeSlider.addOnChangeListener { _, value, _ ->
@@ -128,10 +115,9 @@ class CanvasMainFragment : Fragment() {
             val b = outputStream.toByteArray()
             val bundle = Bundle()
             bundle.putByteArray("data", b)
-            Log.d("main frag", bundle.toString())
             val fragment = NameDialogFragment()
             fragment.arguments = bundle
-            fragment.show(childFragmentManager, "tag")
+            fragment.show(childFragmentManager, "save")
         }
 
     }
@@ -141,19 +127,7 @@ class CanvasMainFragment : Fragment() {
         _binding = null
     }
 
-    fun createFile(fileName: String, launcher: ActivityResultLauncher<Intent>) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_TITLE, fileName)
-        intent.addFlags(
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-        )
-        launcher.launch(intent)
-    }
+
 
     fun buttonBackgroundReset() {
         binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
