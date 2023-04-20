@@ -15,11 +15,11 @@ To-Do:
 * Loading images
 * Settings
 * Fill can
-- Integrate API Calls to Social Media
+* Integrate API Calls to Social Media
 
 Recommendations from the Midterm Presentation: 
-- Custom Brushes
-- Light / Dark theme
-- Storage Locations
-- Eraser tool
+* Custom Brushes
+* Light / Dark theme
+* Storage Locations
+* Eraser tool
 
