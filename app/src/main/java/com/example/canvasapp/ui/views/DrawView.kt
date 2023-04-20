@@ -66,7 +66,7 @@ class DrawView : View {
         paintBrush.strokeWidth = brushSize
         paintBrush.alpha = brushOpacity
 
-        drawBitmap = Bitmap.createBitmap(900, 900, Bitmap.Config.ARGB_8888)
+        drawBitmap = Bitmap.createBitmap(900, 1100, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(drawBitmap)
         drawCanvas.drawColor(Color.WHITE)
 
@@ -145,8 +145,21 @@ class DrawView : View {
                     else -> return false
                 }
             }
-            Tool.FILLCAN ->
-                TODO()
+
+            //creates stack overflow error
+            Tool.FILLCAN -> {
+//                var tempBitmap = getTempBitmap()
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+//                        floodFill(tempBitmap, x.toInt(), y.toInt(), currentBrush)
+//                        drawBitmap = tempBitmap
+                        currentTool = Tool.BRUSH
+                        fragment?.buttonBackgroundReset()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
         }
 
         //Use postInvalidate after changes on UI
@@ -194,6 +207,7 @@ class DrawView : View {
             canvas.drawPath(pathList[i], paintBrush)
         }
     }
+
     fun undo() {
         if (pathList.isNotEmpty()) {
             undonePathList.add(pathList.removeAt(pathList.size - 1))
@@ -203,6 +217,7 @@ class DrawView : View {
             invalidate()
         }
     }
+
     fun redo() {
         if (undonePathList.isNotEmpty()) {
             pathList.add(undonePathList.removeAt(undonePathList.size - 1))
@@ -212,20 +227,24 @@ class DrawView : View {
             invalidate()
         }
     }
+
     fun canUndo(): Boolean {
         return pathList.isNotEmpty()
     }
+
     fun canRedo(): Boolean {
         return undonePathList.isNotEmpty()
     }
 
     private fun getTempBitmap(): Bitmap {
-        val tempBitmap = Bitmap.createBitmap(drawBitmap.width, drawBitmap.height, Bitmap.Config.ARGB_8888)
+        val tempBitmap =
+            Bitmap.createBitmap(drawBitmap.width, drawBitmap.height, Bitmap.Config.ARGB_8888)
         val tempCanvas = Canvas(tempBitmap)
         tempCanvas.drawColor(Color.WHITE)
         drawLines(tempCanvas)
         return tempBitmap
     }
+
     private fun getPixelColor(x: Float, y: Float, tempBitmap: Bitmap): Int {
         //val tempBitmap = getTempBitmap()
 
@@ -235,44 +254,29 @@ class DrawView : View {
             return Color.TRANSPARENT
         }
     }
-
-//    private fun FloodFill(pt: Point, targetColor: Int, replacementColor: Int) {
-//        val q: Queue<Point> = LinkedList<Point>()
-//        q.add(pt)
-//        while (q.size > 0) {
-//            val n: Point = q.poll()
-//            if (drawBitmap.getPixel(n.x, n.y) !== targetColor) continue
-//            val w: Point = n
-//            val e = Point(n.x + 1, n.y)
-//            while (w.x > 0 && drawBitmap.getPixel(w.x, w.y) === targetColor) {
-//                drawBitmap.setPixel(w.x, w.y, replacementColor)
-//                if (w.y > 0 && drawBitmap.getPixel(w.x, w.y - 1) === targetColor) q.add(
-//                    Point(w.x, w.y - 1)
-//                )
-//                if (w.y < drawBitmap.getHeight() - 1 && drawBitmap.getPixel(
-//                        w.x, w.y + 1
-//                    ) === targetColor
-//                ) q.add(
-//                    Point(w.x, w.y + 1)
-//                )
-//                w.x--
-//            }
-//            while (e.x < drawBitmap.getWidth() - 1 && drawBitmap.getPixel(
-//                    e.x, e.y
-//                ) === targetColor
-//            ) {
-//                drawBitmap.setPixel(e.x, e.y, replacementColor)
-//                if (e.y > 0 && drawBitmap.getPixel(e.x, e.y - 1) === targetColor) q.add(
-//                    Point(e.x, e.y - 1)
-//                )
-//                if (e.y < drawBitmap.getHeight() - 1 && drawBitmap.getPixel(
-//                        e.x, e.y + 1
-//                    ) === targetColor
-//                ) q.add(
-//                    Point(e.x, e.y + 1)
-//                )
-//                e.x++
-//            }
+//        private fun floodFillUtil(
+//            bitmap: Bitmap, x: Int, y: Int,
+//            prevC: Int, newC: Int
+//        ) {
+//            // Base cases
+//            if (x < 0 || x >= drawBitmap.width || y < 0 || y >= drawBitmap.height) return
+//            if (bitmap.getPixel(x,y) != prevC) return
+//
+//            // Replace the color at (x, y)
+//            bitmap.setPixel(x,y,newC)
+//
+//            // Recur for north, east, south and west
+//            floodFillUtil(bitmap, x + 1, y, prevC, newC)
+//            floodFillUtil(bitmap, x - 1, y, prevC, newC)
+//            floodFillUtil(bitmap, x, y + 1, prevC, newC)
+//            floodFillUtil(bitmap, x, y - 1, prevC, newC)
 //        }
-//    }
+//
+//        // It mainly finds the previous color on (x, y) and
+//        // calls floodFillUtil()
+//        fun floodFill(bitmap: Bitmap, x: Int, y: Int, newC: Int) {
+//            val prevC = bitmap.getPixel(x,y)
+//            if (prevC == newC) return
+//            floodFillUtil(bitmap, x, y, prevC, newC)
+//        }
 }

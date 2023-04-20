@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_menu_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FD752F"
+    android:background="#555555"
     tools:context=".MainActivity">
 
     <!-- New Canvas Button -->
     <Button
-        android:id="@+id/NewCanvasButton"
+        android:id="@+id/open_canvas_button"
         android:text="@string/open_canvas"
         android:textColor="@color/white"
         android:layout_width="300dp"
@@ -20,12 +21,12 @@
         android:backgroundTint="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/MainMenuTitle" />
+        app:layout_constraintBottom_toTopOf="@id/gallery_button" />
     <!--android:onClick="loadNewCanvas"-->
 
     <!-- View Gallery Button -->
     <Button
-        android:id="@+id/GalleryButton"
+        android:id="@+id/gallery_button"
         android:text="@string/view_canvases"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -33,36 +34,46 @@
         android:layout_height="75dp"
         android:layout_margin="10dp"
         android:backgroundTint="#000000"
-        app:layout_constraintTop_toBottomOf="@id/NewCanvasButton"
-        app:layout_constraintStart_toStartOf="@id/NewCanvasButton"
-        app:layout_constraintEnd_toEndOf="@id/NewCanvasButton"/>
+        app:layout_constraintBottom_toTopOf="@id/themes_button"
+        app:layout_constraintStart_toStartOf="@id/open_canvas_button"
+        app:layout_constraintEnd_toEndOf="@id/open_canvas_button"/>
     <!--android:onClick="loadGallery"-->
 
 
     <!-- Settings Button -->
     <Button
-        android:id="@+id/SettingsButton"
-        android:text="@string/settings"
+        android:id="@+id/themes_button"
+        android:text="@string/Themes"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_width="300dp"
         android:layout_height="75dp"
-        android:layout_margin="10dp"
         android:backgroundTint="#000000"
-        app:layout_constraintTop_toBottomOf="@id/GalleryButton"
-        app:layout_constraintStart_toStartOf="@id/NewCanvasButton"
-        app:layout_constraintEnd_toEndOf="@id/NewCanvasButton"/>
+        android:layout_margin="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/open_canvas_button"
+        app:layout_constraintEnd_toEndOf="@id/open_canvas_button"/>
     <!--android:onClick="loadSettings"-->
 
     <ImageView
-        android:id="@+id/MainMenuTitle"
+        android:id="@+id/main_menu_title"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/open_canvas_button"
         tools:ignore="ImageContrastCheck"
         android:src="@drawable/canvasapppic"
         android:contentDescription="@string/canvas_by_the_a_team" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

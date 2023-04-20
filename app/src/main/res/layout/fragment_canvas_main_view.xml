@@ -9,32 +9,16 @@
     tools:context=".ui.CanvasMainFragment">
 
 
-    <ImageView
-        android:id="@+id/canvas_gallery_border"
-        android:layout_width="303dp"
-        android:layout_height="303dp"
-        android:layout_margin="20dp"
-        android:adjustViewBounds="true"
-        app:layout_constraintBottom_toTopOf="@id/canvas_brush_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/canvas_main_opacity_slider"
-        android:src="@drawable/border_resource"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/border_resource" />
-
     <RelativeLayout
         android:id="@+id/canvas_gallery_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_margin="20dp"
+        android:layout_width="900px"
+        android:layout_height="1100px"
+        android:layout_margin="10dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/canvas_gallery_border"
-        app:layout_constraintEnd_toEndOf="@id/canvas_gallery_border"
-        app:layout_constraintStart_toStartOf="@id/canvas_gallery_border"
-        app:layout_constraintTop_toTopOf="@id/canvas_gallery_border"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/canvas_main_opacity_text"
         tools:ignore="ContentDescription,ImageContrastCheck"
         tools:src="@drawable/photo_ref_foreground">
         <include layout="@layout/draw_view"/>
@@ -45,125 +29,106 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="save"
-        app:layout_constraintStart_toStartOf="@id/canvas_gallery_image"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintStart_toEndOf="@id/redo_button"
         app:layout_constraintEnd_toEndOf="@id/canvas_gallery_image"
-        app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
-        app:layout_constraintBottom_toTopOf="@id/canvas_main_brush_tool"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         />
 
     <ImageButton
-        android:id="@+id/undo_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintStart_toStartOf="@id/canvas_gallery_image"
-        app:layout_constraintEnd_toStartOf="@id/save_button"
-        app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
-        app:layout_constraintBottom_toTopOf="@id/canvas_main_brush_tool"
-        android:layout_marginHorizontal="20dp"
+        android:id="@+id/view_button"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
+        app:layout_constraintTop_toTopOf="@id/canvas_gallery_image"
+        android:layout_marginHorizontal="1dp"
         android:background="#FFFFFF"
-        android:contentDescription="Undo button"
+        android:contentDescription="view button"
+
         tools:ignore="HardcodedText" />
 
     <ImageButton
-        android:id="@+id/redo_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintStart_toEndOf="@id/save_button"
-        app:layout_constraintEnd_toEndOf="@id/canvas_gallery_image"
-        app:layout_constraintTop_toBottomOf="@id/canvas_gallery_image"
-        app:layout_constraintBottom_toTopOf="@id/canvas_main_brush_tool"
-        android:layout_marginHorizontal="20dp"
+        android:id="@+id/brush_tool"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
+        app:layout_constraintTop_toBottomOf="@id/view_button"
         android:background="#FFFFFF"
-        android:contentDescription="Redo button"
-        tools:ignore="HardcodedText" />
-
-    <ImageButton
-        android:id="@+id/canvas_main_brush_tool"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="20dp"
-        android:background="#FFFFFF"
+        android:layout_marginVertical="10dp"
         android:contentDescription="Brush tool"
         tools:ignore="HardcodedText" />
 
-    <ImageView
-        android:id="@+id/canvas_brush_border"
-        android:layout_width="63dp"
-        android:layout_height="63dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/border_resource"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/border_resource" />
-
     <ImageButton
-        android:id="@+id/canvas_main_eraser_tool"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/canvas_main_brush_tool"
-        android:layout_marginHorizontal="30dp"
-        android:background="#AAAAAA"
+        android:id="@+id/eraser_tool"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_marginHorizontal="2dp"
+        app:layout_constraintTop_toBottomOf="@id/brush_tool"
+        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
+        android:background="#FFFFFF"
+        android:layout_marginVertical="10dp"
         android:contentDescription="Fill tool"
         tools:ignore="HardcodedText" />
 
-    <ImageView
-        android:id="@+id/canvas_eraser_border"
-        android:layout_width="63dp"
-        android:layout_height="63dp"
-        android:layout_marginHorizontal="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/canvas_main_brush_tool"
-        android:src="@drawable/border_resource"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/border_resource" />
-
     <ImageButton
-        android:id="@+id/canvas_main_picker_tool"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="30dp"
-        android:background="#FFFFFF"
-        android:contentDescription="Take Color"
-        tools:ignore="HardcodedText" />
-
-    <ImageView
-        android:id="@+id/canvas_picker_border"
-        android:layout_width="63dp"
-        android:layout_height="63dp"
-        android:layout_marginHorizontal="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/border_resource"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/border_resource" />
-
-    <ImageButton
-        android:id="@+id/canvas_main_color_tool"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/canvas_main_picker_tool"
-        android:layout_marginHorizontal="30dp"
+        android:id="@+id/color_tool"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintBottom_toTopOf="@id/fill_can"
+        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginVertical="10dp"
         android:background="#FFFFFF"
         android:contentDescription="Choose Color"
         tools:ignore="HardcodedText" />
 
-    <ImageView
-        android:id="@+id/canvas_color_border"
-        android:layout_width="63dp"
-        android:layout_height="63dp"
+    <ImageButton
+        android:id="@+id/fill_can"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
+        app:layout_constraintBottom_toTopOf="@id/picker_tool"
+        android:layout_marginHorizontal="2dp"
+        android:background="#FFFFFF"
+        android:layout_marginVertical="10dp"
+        android:contentDescription="Redo button"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/picker_tool"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintBottom_toBottomOf="@id/canvas_gallery_image"
+        app:layout_constraintEnd_toStartOf="@id/canvas_gallery_image"
+        android:layout_marginHorizontal="2dp"
+        android:background="#FFFFFF"
+        android:contentDescription="Take Color"
+        tools:ignore="HardcodedText" />
+
+
+
+    <ImageButton
+        android:id="@+id/undo_button"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintStart_toStartOf="@id/canvas_gallery_image"
+        app:layout_constraintTop_toTopOf="@id/save_button"
+        android:background="#FFFFFF"
+        android:contentDescription="Undo button"
+
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/redo_button"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        app:layout_constraintStart_toEndOf="@id/undo_button"
+        app:layout_constraintTop_toTopOf="@id/save_button"
         android:layout_marginHorizontal="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/canvas_main_picker_tool"
-        android:src="@drawable/border_resource"
-        tools:ignore="ContentDescription,ImageContrastCheck"
-        tools:src="@drawable/border_resource" />
+        android:background="#FFFFFF"
+        android:contentDescription="Redo button"
+        tools:ignore="HardcodedText" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/canvas_main_size_slider"
