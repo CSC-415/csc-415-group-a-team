@@ -57,7 +57,7 @@ class MainMenuFragment : Fragment() {
         binding.themesButton.setOnClickListener {
             val alertDialog = AlertDialog.Builder(activity)
             alertDialog.setTitle("Choose a Theme")
-            val themes = arrayOf("Dark", "Light", "Deep Sea", "Rainforest", "Tangerine")
+            val themes = arrayOf("Dark", "Light", "Deep Sea", "Rainforest")
             alertDialog.setSingleChoiceItems(themes, checkedItem[0]) { dialog, which ->
                 checkedItem[0] = which
                 when (themes[which]) {
@@ -65,7 +65,7 @@ class MainMenuFragment : Fragment() {
                     "Light" -> sharedViewModel.backgroundColor.value = Color.parseColor("#f2f5ff")
                     "Deep Sea" -> sharedViewModel.backgroundColor.value = Color.parseColor("#2d4491")
                     "Rainforest" -> sharedViewModel.backgroundColor.value = Color.parseColor("#18471d")
-                    "Tangerine" -> sharedViewModel.backgroundColor.value = Color.parseColor("#ff6800")
+                    //"Tangerine" -> sharedViewModel.backgroundColor.value = Color.parseColor("#ff6800")
                 }
                 dialog.dismiss()
 

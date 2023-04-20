@@ -1,6 +1,7 @@
 package com.example.canvasapp.ui
 
 
+import SharedViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.canvasapp.R
 import com.example.canvasapp.ui.adapter.GalleryAdapter
@@ -32,6 +35,12 @@ class GalleryListFragment : Fragment() {
     ): View? {
         _binding = FragmentGalleryListBinding.inflate(inflater, container, false)
         binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.backgroundColor.observe(viewLifecycleOwner, Observer { color ->
+            binding.galleryRecyclerView.setBackgroundColor(color)
+        })
 
         val gallery = galleryItemViewModel.refreshData()
 

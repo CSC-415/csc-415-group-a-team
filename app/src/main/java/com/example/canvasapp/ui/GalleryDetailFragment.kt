@@ -1,6 +1,7 @@
 package com.example.canvasapp.ui
 
 
+import SharedViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.canvasapp.R
 import com.example.canvasapp.databinding.FragmentGalleryItemDetailBinding
@@ -26,6 +29,12 @@ class GalleryDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGalleryItemDetailBinding.inflate(inflater, container, false)
+
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.backgroundColor.observe(viewLifecycleOwner, Observer { color ->
+            binding.FragGalleryBackground.setBackgroundColor(color)
+        })
 
         if (arguments != null) {
             val galleryItem = galleryItemViewModel.fetchById(requireArguments().getInt(BUNDLE_ID))
