@@ -33,13 +33,11 @@ class GalleryAdapter(
         private val onItemClick: (adapterPosition: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-
         init {
             itemView.setOnClickListener {
                 onItemClick(adapterPosition)
             }
         }
-
 
         fun bind(galleryItem: Gallery_item) {
             Glide.with(binding.root).load(galleryItem.image).into(binding.galleryImage)

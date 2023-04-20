@@ -1,5 +1,6 @@
 package com.example.canvasapp.ui
 
+import SharedViewModel
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -11,11 +12,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.canvasapp.R
 import com.example.canvasapp.databinding.FragmentCanvasMainViewBinding
@@ -37,7 +43,6 @@ class CanvasMainFragment : Fragment() {
     private val buttonDefaultBackground = "#FFFFFF"
     private val buttonClickedBackground = "#777777"
 
-    //temp image urls for demonstration
     private val brush =
         "https://www.pngall.com/wp-content/uploads/2016/04/Paint-Brush-Free-Download-PNG.png"
     private val eraser =
@@ -50,6 +55,11 @@ class CanvasMainFragment : Fragment() {
         "https://cdn.discordapp.com/attachments/710398709598257235/1098392316827410433/undo.png"
     private val redo =
         "https://cdn.discordapp.com/attachments/710398709598257235/1098392317049716846/redo.png"
+    private val fillcan =
+        "https://wiki.teamfortress.com/w/images/thumb/5/5b/Backpack_Paint_Can.png/250px-Backpack_Paint_Can.png"
+    private val viewtools =
+        "https://static.vecteezy.com/system/resources/thumbnails/010/150/710/small/eye-icon-sign-symbol-design-free-png.png"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,13 +67,20 @@ class CanvasMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCanvasMainViewBinding.inflate(inflater, container, false)
-        Glide.with(this).load(brush).into(binding.canvasMainBrushTool)
-        Glide.with(this).load(eraser).into(binding.canvasMainEraserTool)
-        Glide.with(this).load(picker).into(binding.canvasMainPickerTool)
-        Glide.with(this).load(color).into(binding.canvasMainColorTool)
+        Glide.with(this).load(brush).into(binding.brushTool)
+        Glide.with(this).load(eraser).into(binding.eraserTool)
+        Glide.with(this).load(picker).into(binding.pickerTool)
+        Glide.with(this).load(color).into(binding.colorTool)
         Glide.with(this).load(undo).into(binding.undoButton)
         Glide.with(this).load(redo).into(binding.redoButton)
+        //Glide.with(this).load(fillcan).into(binding.fillCan)
+        Glide.with(this).load(viewtools).into(binding.viewButton)
 
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.backgroundColor.observe(viewLifecycleOwner, Observer { color ->
+            binding.canvasViewLayout.setBackgroundColor(color)
+        })
 
         return binding.root
     }
@@ -100,27 +117,52 @@ class CanvasMainFragment : Fragment() {
         }
 
         //Eraser button
-        binding.canvasMainEraserTool.setOnClickListener {
+        binding.eraserTool.setOnClickListener {
             DrawView.currentTool = DrawView.Companion.Tool.ERASER
             buttonBackgroundReset()
         }
 
         //Brush button (sets to last color)
-        binding.canvasMainBrushTool.setOnClickListener {
+        binding.brushTool.setOnClickListener {
             DrawView.currentTool = DrawView.Companion.Tool.BRUSH
             buttonBackgroundReset()
         }
 
         //Color wheel
-        binding.canvasMainColorTool.setOnClickListener {
+        binding.colorTool.setOnClickListener {
             openColorPickerDialogue()
             buttonBackgroundReset()
         }
 
         //Color picker
-        binding.canvasMainPickerTool.setOnClickListener {
+        binding.pickerTool.setOnClickListener {
             DrawView.currentTool = DrawView.Companion.Tool.PICKER
             buttonBackgroundReset()
+        }
+
+        //Fill Can
+//        binding.fillCan.setOnClickListener {
+//            DrawView.currentTool = DrawView.Companion.Tool.FILLCAN
+//            buttonBackgroundReset()
+//        }
+
+        binding.viewButton.setOnClickListener{
+            if(binding.brushTool.visibility == VISIBLE) {
+                binding.viewButton.setBackgroundColor(Color.parseColor(buttonClickedBackground))
+                binding.brushTool.visibility = INVISIBLE
+                binding.eraserTool.visibility = INVISIBLE
+                //binding.fillCan.visibility = INVISIBLE
+                binding.colorTool.visibility = INVISIBLE
+                binding.pickerTool.visibility = INVISIBLE
+            }
+            else {
+                binding.viewButton.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+                binding.brushTool.visibility = VISIBLE
+                binding.eraserTool.visibility = VISIBLE
+                //binding.fillCan.visibility = VISIBLE
+                binding.colorTool.visibility = VISIBLE
+                binding.pickerTool.visibility = VISIBLE
+            }
         }
 
         //Save button
@@ -132,18 +174,19 @@ class CanvasMainFragment : Fragment() {
             val b = outputStream.toByteArray()
             val bundle = Bundle()
             bundle.putByteArray("data", b)
-            Log.d("main frag", bundle.toString())
             val fragment = NameDialogFragment()
             fragment.arguments = bundle
-            fragment.show(childFragmentManager, "tag")
+            fragment.show(childFragmentManager, "save")
         }
 
+        //Undo Button
         binding.undoButton.setOnClickListener {
             val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
             drawView.undo()
             updateUndoRedoButtons()
         }
 
+        //Redo Button
         binding.redoButton.setOnClickListener {
             val drawView = binding.canvasGalleryImage.findViewById<DrawView>(R.id.draw_view)
             drawView.redo()
@@ -156,36 +199,26 @@ class CanvasMainFragment : Fragment() {
         _binding = null
     }
 
-    fun createFile(fileName: String, launcher: ActivityResultLauncher<Intent>) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_TITLE, fileName)
-        intent.addFlags(
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-        )
-        launcher.launch(intent)
-    }
+
 
     fun buttonBackgroundReset() {
-        binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        binding.pickerTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
         val blendColor = ColorUtils.blendARGB(Color.parseColor("#404040"), DrawView.currentBrush,0.5F)
-        binding.canvasMainBrushTool.setBackgroundColor(blendColor)
-        binding.canvasMainColorTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
-        binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        binding.brushTool.setBackgroundColor(blendColor)
+        binding.colorTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        binding.eraserTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        //binding.fillCan.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
 
         when (DrawView.currentTool) {
             DrawView.Companion.Tool.BRUSH ->
-                binding.canvasMainBrushTool.setBackgroundColor(DrawView.currentBrush)
+                binding.brushTool.setBackgroundColor(DrawView.currentBrush)
             DrawView.Companion.Tool.ERASER ->
-                binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
+                binding.eraserTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
             DrawView.Companion.Tool.PICKER ->
-                binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
+                binding.pickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
             DrawView.Companion.Tool.FILLCAN ->
                 TODO()
+                //binding.fillCan.setBackgroundColor(Color.parseColor(buttonClickedBackground))
         }
     }
 

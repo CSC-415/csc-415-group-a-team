@@ -1,6 +1,7 @@
 package com.example.canvasapp.ui
 
 
+import SharedViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.canvasapp.R
 import com.example.canvasapp.ui.adapter.GalleryAdapter
@@ -33,6 +36,12 @@ class GalleryListFragment : Fragment() {
         _binding = FragmentGalleryListBinding.inflate(inflater, container, false)
         binding.galleryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.backgroundColor.observe(viewLifecycleOwner, Observer { color ->
+            binding.galleryRecyclerView.setBackgroundColor(color)
+        })
+
         val gallery = galleryItemViewModel.refreshData()
 
         if (gallery.isEmpty()){
@@ -43,8 +52,6 @@ class GalleryListFragment : Fragment() {
             binding.galleryRecyclerView.isVisible = true
 
             val adapter = GalleryAdapter(gallery as MutableList<Gallery_item>) { position ->
-
-
                 requireActivity().supportFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace(
@@ -56,16 +63,11 @@ class GalleryListFragment : Fragment() {
             }
             binding.galleryRecyclerView.adapter = adapter
         }
-
         return binding.root
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

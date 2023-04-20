@@ -24,7 +24,6 @@ class GalleryItemViewModel : ViewModel() {
         return gallery.toList()
     }
 
-
     fun fetchById(id: Int) = gallery.first { it.id == id }
 
     private fun createGalleryItem(image: String, name: String, date: String, id: Int) =
