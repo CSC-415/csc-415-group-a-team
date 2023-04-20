@@ -94,8 +94,8 @@ class DrawView : View {
                         brushSizeList.add(brushSize)
                         opacityList.add(brushOpacity)
                         path.reset()
-                        undonePathList.clear() // Clear the redo list
-                        fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
+                        undonePathList.clear()
+                        fragment?.updateUndoRedoButtons()
                     }
                     else -> return false
                 }
@@ -114,8 +114,8 @@ class DrawView : View {
                         brushSizeList.add(brushSize)
                         opacityList.add(255)
                         path.reset()
-                        undonePathList.clear() // Clear the redo list
-                        fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
+                        undonePathList.clear()
+                        fragment?.updateUndoRedoButtons()
                     }
                     else -> return false
                 }

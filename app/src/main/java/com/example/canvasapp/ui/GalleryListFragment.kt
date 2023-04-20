@@ -52,8 +52,6 @@ class GalleryListFragment : Fragment() {
             binding.galleryRecyclerView.isVisible = true
 
             val adapter = GalleryAdapter(gallery as MutableList<Gallery_item>) { position ->
-
-
                 requireActivity().supportFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace(
@@ -65,16 +63,11 @@ class GalleryListFragment : Fragment() {
             }
             binding.galleryRecyclerView.adapter = adapter
         }
-
         return binding.root
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

@@ -36,7 +36,6 @@ class ShareFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         if (arguments != null) {
             val imagePath = requireArguments().getString("image")
             Log.d("share", imagePath!!)
@@ -52,15 +51,12 @@ class ShareFragment: DialogFragment() {
                         }
                     }
                 }
-
-
             //save to phone gallery
             binding.SaveToPhone.setOnClickListener {
                 val imageName = File(imagePath).name
                 createFile(imageName, startActivityForResult)
                 createToast("Image Saved!")
             }
-
             //share to insta
             binding.instagram.setOnClickListener{
                 val type = "image/*"
@@ -68,12 +64,7 @@ class ShareFragment: DialogFragment() {
                 Log.d("share", imageName)
                 createInstagramIntent(type, imageName)
             }
-
-
-
-
         }
-
     }
 
     fun createToast(text: String) {
@@ -98,21 +89,14 @@ class ShareFragment: DialogFragment() {
     }
 
     private fun createInstagramIntent(type: String, mediaPath: String) {
-
-        // Create the new Intent using the 'Send' action.
         val share = Intent(Intent.ACTION_SEND)
 
-        // Set the MIME type
         share.type = type
 
-        // Create the URI from the media
         val media = File(mediaPath)
         val uri = media.toURI()
 
-        // Add the URI to the Intent.
         share.putExtra(Intent.EXTRA_STREAM, uri)
-
-        // Broadcast the Intent.
         startActivity(Intent.createChooser(share, "Share to"))
     }
 
