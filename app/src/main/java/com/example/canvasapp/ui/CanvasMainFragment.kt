@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.canvasapp.R
@@ -88,44 +89,38 @@ class CanvasMainFragment : Fragment() {
             }
 
         updateUndoRedoButtons()
+        buttonBackgroundReset()
 
-        // Set up the slider using ViewBinding
         binding.canvasMainSizeSlider.addOnChangeListener { _, value, _ ->
             DrawView.brushSize = value
         }
 
-        // Opacity Slider
         binding.canvasMainOpacitySlider.addOnChangeListener { _, value, _ ->
             DrawView.brushOpacity = value.toInt()
         }
 
         //Eraser button
         binding.canvasMainEraserTool.setOnClickListener {
-            buttonBackgroundReset()
-            binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
-            //DrawView.currentBrush = Color.WHITE
             DrawView.currentTool = DrawView.Companion.Tool.ERASER
+            buttonBackgroundReset()
         }
 
         //Brush button (sets to last color)
         binding.canvasMainBrushTool.setOnClickListener {
-            buttonBackgroundReset()
-            binding.canvasMainBrushTool.setBackgroundColor(DrawView.currentBrush)
             DrawView.currentTool = DrawView.Companion.Tool.BRUSH
+            buttonBackgroundReset()
         }
 
-        //Color Picker (temp set to red)
+        //Color wheel
         binding.canvasMainColorTool.setOnClickListener {
-            buttonBackgroundReset()
             openColorPickerDialogue()
-
+            buttonBackgroundReset()
         }
 
-        //Color Tool
+        //Color picker
         binding.canvasMainPickerTool.setOnClickListener {
-            buttonBackgroundReset()
-            binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
             DrawView.currentTool = DrawView.Companion.Tool.PICKER
+            buttonBackgroundReset()
         }
 
         //Save button
@@ -154,7 +149,6 @@ class CanvasMainFragment : Fragment() {
             drawView.redo()
             updateUndoRedoButtons()
         }
-
     }
 
     override fun onDestroyView() {
@@ -178,9 +172,21 @@ class CanvasMainFragment : Fragment() {
 
     fun buttonBackgroundReset() {
         binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
-        binding.canvasMainBrushTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+        val blendColor = ColorUtils.blendARGB(Color.parseColor("#404040"), DrawView.currentBrush,0.5F)
+        binding.canvasMainBrushTool.setBackgroundColor(blendColor)
         binding.canvasMainColorTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
         binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonDefaultBackground))
+
+        when (DrawView.currentTool) {
+            DrawView.Companion.Tool.BRUSH ->
+                binding.canvasMainBrushTool.setBackgroundColor(DrawView.currentBrush)
+            DrawView.Companion.Tool.ERASER ->
+                binding.canvasMainEraserTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
+            DrawView.Companion.Tool.PICKER ->
+                binding.canvasMainPickerTool.setBackgroundColor(Color.parseColor(buttonClickedBackground))
+            DrawView.Companion.Tool.FILLCAN ->
+                TODO()
+        }
     }
 
     fun openColorPickerDialogue() {
@@ -190,8 +196,8 @@ class CanvasMainFragment : Fragment() {
 
                 override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
                     DrawView.currentBrush = color
-                    binding.canvasMainBrushTool.setBackgroundColor(color)
-                    //lastColor = color
+                    DrawView.currentTool = DrawView.Companion.Tool.BRUSH
+                    buttonBackgroundReset()
                 }
             })
         colorPickerDialogue.show()

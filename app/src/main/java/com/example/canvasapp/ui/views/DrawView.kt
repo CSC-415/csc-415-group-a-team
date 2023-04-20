@@ -38,7 +38,7 @@ class DrawView : View {
         var brushOpacity = 255
 
         enum class Tool {
-            BRUSH, ERASER, PICKER
+            BRUSH, ERASER, PICKER, FILLCAN
         }
 
         var currentTool = Tool.BRUSH
@@ -78,62 +78,75 @@ class DrawView : View {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var x = event.x
         var y = event.y
-        if (currentTool == Tool.BRUSH) {
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    path.moveTo(x, y)
-                    return true
+        when (currentTool) {
+            Tool.BRUSH ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        path.moveTo(x, y)
+                        return true
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        path.lineTo(x, y)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        pathList.add(Path(path))
+                        colorList.add(currentBrush)
+                        brushSizeList.add(brushSize)
+                        opacityList.add(brushOpacity)
+                        path.reset()
+                        undonePathList.clear() // Clear the redo list
+                        fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
+                    }
+                    else -> return false
                 }
-                MotionEvent.ACTION_MOVE -> {
-                    path.lineTo(x, y)
+            Tool.ERASER ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        path.moveTo(x, y)
+                        return true
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        path.lineTo(x, y)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        pathList.add(Path(path))
+                        colorList.add(Color.WHITE)
+                        brushSizeList.add(brushSize)
+                        opacityList.add(255)
+                        path.reset()
+                        undonePathList.clear() // Clear the redo list
+                        fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
+                    }
+                    else -> return false
                 }
-                MotionEvent.ACTION_UP -> {
-                    pathList.add(Path(path))
-                    colorList.add(currentBrush)
-                    brushSizeList.add(brushSize)
-                    opacityList.add(brushOpacity)
-                    path.reset()
-                    undonePathList.clear() // Clear the redo list
-                    fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
+            Tool.PICKER -> {
+                var tempBitmap = getTempBitmap()
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        return true
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val pickedColor = getPixelColor(x, y, tempBitmap)
+                        if (pickedColor != Color.TRANSPARENT) {
+                            currentBrush = pickedColor
+                            paintBrush.color = currentBrush
+                        }
+                        fragment?.buttonBackgroundReset()
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        val pickedColor = getPixelColor(x, y, tempBitmap)
+                        if (pickedColor != Color.TRANSPARENT) {
+                            currentBrush = pickedColor
+                            paintBrush.color = currentBrush
+                        }
+                        currentTool = Tool.BRUSH
+                        fragment?.buttonBackgroundReset()
+                    }
+                    else -> return false
                 }
-                else -> return false
             }
-        }
-        if (currentTool == Tool.ERASER) {
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    path.moveTo(x, y)
-                    return true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    path.lineTo(x, y)
-                }
-                MotionEvent.ACTION_UP -> {
-                    pathList.add(Path(path))
-                    colorList.add(Color.WHITE)
-                    brushSizeList.add(brushSize)
-                    opacityList.add(255)
-                    path.reset()
-                    undonePathList.clear() // Clear the redo list
-                    fragment?.updateUndoRedoButtons() // Update the undo and redo buttons
-                }
-                else -> return false
-            }
-        }
-        if (currentTool == Tool.PICKER) {
-            //val savedCanvas =
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    return true
-                }
-                MotionEvent.ACTION_MOVE -> {
-
-                }
-                MotionEvent.ACTION_UP -> {
-                }
-                else -> return false
-            }
-
+            Tool.FILLCAN ->
+                TODO()
         }
 
         //Use postInvalidate after changes on UI
@@ -150,18 +163,13 @@ class DrawView : View {
         savedCanvas.drawBitmap(drawBitmap, 0f, 0f, null)
         savedCanvas.drawColor(Color.WHITE)
 
-        for (i in pathList.indices) {
-            drawLines(savedCanvas, i)
-        }
+        drawLines(savedCanvas)
 
         return savedBitmap
     }
 
     override fun onDraw(canvas: Canvas) {
-        for (i in pathList.indices) {
-            drawLines(canvas, i)
-            invalidate() //changes done on UI
-        }
+        drawLines(canvas)
 
         //draws the currently being drawn path
         if (currentTool == Tool.BRUSH) {
@@ -178,11 +186,13 @@ class DrawView : View {
         }
     }
 
-    private fun drawLines(canvas: Canvas, i: Int) {
-        paintBrush.color = colorList[i]
-        paintBrush.alpha = opacityList[i]
-        paintBrush.strokeWidth = brushSizeList[i]
-        canvas.drawPath(pathList[i], paintBrush)
+    private fun drawLines(canvas: Canvas) {
+        for (i in pathList.indices) {
+            paintBrush.color = colorList[i]
+            paintBrush.alpha = opacityList[i]
+            paintBrush.strokeWidth = brushSizeList[i]
+            canvas.drawPath(pathList[i], paintBrush)
+        }
     }
     fun undo() {
         if (pathList.isNotEmpty()) {
@@ -207,6 +217,23 @@ class DrawView : View {
     }
     fun canRedo(): Boolean {
         return undonePathList.isNotEmpty()
+    }
+
+    private fun getTempBitmap(): Bitmap {
+        val tempBitmap = Bitmap.createBitmap(drawBitmap.width, drawBitmap.height, Bitmap.Config.ARGB_8888)
+        val tempCanvas = Canvas(tempBitmap)
+        tempCanvas.drawColor(Color.WHITE)
+        drawLines(tempCanvas)
+        return tempBitmap
+    }
+    private fun getPixelColor(x: Float, y: Float, tempBitmap: Bitmap): Int {
+        //val tempBitmap = getTempBitmap()
+
+        if (x >= 0 && y >= 0 && x < drawBitmap.width && y < drawBitmap.height) {
+            return tempBitmap.getPixel(x.toInt(), y.toInt())
+        } else {
+            return Color.TRANSPARENT
+        }
     }
 
 //    private fun FloodFill(pt: Point, targetColor: Int, replacementColor: Int) {
